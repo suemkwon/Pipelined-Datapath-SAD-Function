@@ -1,7 +1,7 @@
 # Begin subroutine
 vbsme:  
-    li      $v0, 0                     # reset $v0 and $v1
-    li      $v1, 0
+    ori      $v0, $zero, 0                     # reset $v0 and $v1
+    ori      $v1, $zero, 0
     # insert your code here
     addi    $sp, $sp, -4               # creating space on the stack pointer
     sw     $ra, 0($sp)                 # save return address
