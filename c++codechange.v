@@ -106,6 +106,14 @@ ShiftUpRight:
     beq    $s1, $zero, ShiftRight
     j    ShiftUpRight
 
+ShiftDownLeft:    
+    addi    $s0, $s0, -1
+    addi    $s1, $s1, 1
+    jal    SAD
+    beq    $s1, $s3, ShiftRight
+    beq    $s0, $zero, ShiftDown
+    j    ShiftDownLeft
+
 ShiftDown:
     addi    $s1, $s1, 1
     jal    SAD
@@ -119,13 +127,6 @@ ShiftRight:
     jal    checkEnd
     nop
     j    ShiftUpRight
-
-checkEnd:    
-    bne    $s0, $s2, notEnd
-    bne    $s1, $s3, notEnd
-    lw    $ra, 0($sp)
-    addi    $sp, $sp, 4
-    jr    $ra
 
 notEnd:        
     nop
