@@ -3,7 +3,7 @@ vbsme:
     li      $v0, 0                     # reset $v0 and $v1
     li      $v1, 0
     # insert your code here
-    addi    $sp, Ssp, -4               # creating space on the stack pointer
+    addi    $sp, $sp, -4               # creating space on the stack pointer
     sw     $ra, 0($sp)                 # save return address
     ori    $s0, $zero, 0
     ori    $s1, $zero, 0
