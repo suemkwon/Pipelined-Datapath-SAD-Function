@@ -15,7 +15,7 @@ vbsme:
     lw $t7, 12($a0)                 # window column size 
 
     mul $t4, $t2, $t3               # frame (row * column)
-    mul $t7, $t6, $t7               # frame (row * column)
+    mul $t8, $t6, $t7               # frame (row * column)
 
     li $t5, 0                       # nunElements = 0
 
