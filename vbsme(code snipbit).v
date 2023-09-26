@@ -6,7 +6,7 @@ vbsme:
     # insert your code here
 
     li $t0, 1                       # variable for row;      i(row) = 1
-    li $t1, 1                       # variable for column;   i(col) = 1
+    li $t1, 1                       # variable for column;   j(col) = 1
 
     lw $t2, 0($a0)                  # frame row size
     lw $t3, 4($a0)                  # frame column size
@@ -19,10 +19,10 @@ vbsme:
 
     li $t5, 0                       # nunElements = 0
 
-    loop: slt $t4, $t5, exit       # numElements >= (row * column)
+    loop: slt $t4, $t5, exit        # numElements >= (row * column)
 
     addi $sp, $sp, -4                # create space on stack pointer
-    sw $ra, 0($sp)                  # save return address
+    sw $ra, 0($sp)                   # save return address
     addi $s0, $t0, -1                # parameters for row (i-l)
     addi $s1, $t1, -1                # parameters for column (j-l)
 
@@ -31,6 +31,6 @@ vbsme:
     lw $ra, 0($sp)                  # restore the return address
     addi $sp, $sp, 4                # restore the stack pointer
 
-    exit:                            #exit loop
+    exit:                           # exit loop
     jr $ra
    
