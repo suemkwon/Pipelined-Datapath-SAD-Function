@@ -21,7 +21,7 @@ vbsme:
 
     loop: slt $t4, $t5, exit        # numElements >= (row * column)
 
-    addi $sp, $sp, -4                # create space on stack pointer
+    addi $sp, $sp, -16                # create space on stack pointer
     sw $ra, 0($sp)                   # save return address
     addi $s0, $t0, -1                # parameters for row (i-l)
     addi $s1, $t1, -1                # parameters for column (j-l)
@@ -29,7 +29,7 @@ vbsme:
     jal SAD                         # calculate SAD by calling SAD function
 
     lw $ra, 0($sp)                  # restore the return address
-    addi $sp, $sp, 4                # restore the stack pointer
+    addi $sp, $sp, 16                # restore the stack pointer
 
     exit:                           # exit loop
     jr $ra
