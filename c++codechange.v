@@ -21,6 +21,10 @@ main:
     ori    $a1, $zero, 16
     ori    $a2, $zero, 1040
     jal    vbsme
+    jal    print_result
+    lw    $ra, 0($sp)
+    addi    $sp, $sp, 4
+    jr    $ra
 
 calcRightEdge:
     lw    $t0, 4($a0)
