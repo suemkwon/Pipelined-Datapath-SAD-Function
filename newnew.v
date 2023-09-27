@@ -109,5 +109,5 @@ sw    $ra, 0($sp)
          nop
      updateSAD:    add    $s4, $s7, $zero
               add    $v0, $s1, $zero
-    memory[126] = 32'h02001820;    //            add    $v1, $s0, $zero
-    memory[127] = 32'h00000000;    //            nop
+     add    $v1, $s0, $zero
+            nop
