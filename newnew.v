@@ -127,5 +127,5 @@ nop
 updateSAD:    
 add    $s4, $s7, $zero
 add    $v0, $s1, $zero
- add    $v1, $s0, $zero
-            nop
+add    $v1, $s0, $zero
+nop
