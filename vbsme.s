@@ -824,7 +824,8 @@ jumpBack:
     beq     $t1, $t2, left      # if direction = 2, go left. else, go up.
 
 
-
+## correct instructions for up, down, right, and left
+## does not check in the order of the given pattern
 
 # instructions for up
 
