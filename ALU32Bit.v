@@ -28,14 +28,45 @@
 
 module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 
-	input [3:0] ALUControl; // control bits for ALU operation
-                                // you need to adjust the bitwidth as needed
-	input [31:0] A, B;	    // inputs
+	input [3:0] ALUControl; 		// control bits for ALU operation
+                                
+	// you need to adjust the bitwidth as needed
+	
+	input [31:0] A, B;	   	       // inputs
 
-	output [31:0] ALUResult;	// answer
-	output Zero;	    // Zero=1 if ALUResult == 0
+	output [31:0] ALUResult;	       // answer
+	output Zero;	    		       // Zero=1 if ALUResult == 0
 
     /* Please fill in the implementation here... */
 
+	always @ (ALUControl, A, B)
+	begin
+
+		Zero = 0;
+
+		case (ALUControl)
+			// addition
+			4'b0000: begin
+				ALUResult = (A + B);
+				if (ALUResult == 0)
+					Zero = 1;
+			end
+
+			// subtraction
+			4'b0001: begin
+				ALUResult = (A - B);
+			if (ALUResult == 0)
+				Zero = 1;
+			end
+
+			// multiplication
+			4'b0010: begin
+				ALUResult = (A * B);
+				if (ALUResult == 0)
+					Zero = 1;
+			end
+		endcase
+	end
+	
 endmodule
 
