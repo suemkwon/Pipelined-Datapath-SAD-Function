@@ -5,7 +5,7 @@
 // 
 //
 //
-// Student(s) Name and Last Name: FILL IN YOUR INFO HERE!
+// Student(s) Name and Last Name: Justyn Arnold (33%), George Collias (33%), Sue Kwon (33%)
 //
 //
 // Module - register_file.v
