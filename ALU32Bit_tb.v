@@ -38,24 +38,24 @@ module ALU32Bit_tb();
    	 #50;
     
  // subtraction
-  	 //case 5
+  	 //case 3
   	 A <= 32'h000003E8;
   	 B <= 32'h00000112;
    	 ALUControl <= 4'b0001;
    	 #50;
-   	 //case 6
+   	 //case 4
    	 A <= 32'h00000112;
 	 B <= 32'h000003E8;
    	 ALUControl <= 4'b0001;
    	 #50;
     
  // multiplication
-   	 //case 10
+   	 //case 5
    	 A <= 32'h000003E8;
    	 B <= 32'h00000112;
    	 ALUControl <= 4'b0010;
   	 #50;
- 	 //case 11
+ 	 //case 6
   	 A <= 32'hFFFF0000;
    	 B <= 32'h0000000F;
   	 ALUControl <= 4'b0010;
