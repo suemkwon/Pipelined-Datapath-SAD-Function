@@ -54,7 +54,7 @@ module DataMemory_tb();
 	@ (posedge Clk)
 	#50;
 	    
-	    Address <= 32'h000000016;
+	    Address <= 32'h000000002;
 	    WriteData <= 32'h0000000f;
 	    
 		
@@ -70,7 +70,7 @@ module DataMemory_tb();
 	@ (posedge Clk)
 	#50;
 	    
-	    Address <= 32'h0000032;
+	    Address <= 32'h0000006;
 	
 	end
 
