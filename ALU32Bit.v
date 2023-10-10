@@ -64,7 +64,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 					Zero = 1;
 			end
 
-        // logical operations
+        	// logical operations
         
 			// and (ALUControl = 3)
 			4'b0011: begin
@@ -128,7 +128,12 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 		          		ALUResult = 32'h00000000;
 		          		Zero = 1;
 		      		end
-		    	end	
+		    	end
+
+		// data
+
+		// branch
+			
 		endcase
 	end
 endmodule
