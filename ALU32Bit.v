@@ -55,8 +55,8 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 			// subtraction
 			4'b0001: begin
 				ALUResult = (A - B);
-			if (ALUResult == 0)
-				Zero = 1;
+				if (ALUResult == 0)
+					Zero = 1;
 			end
 
 			// multiplication
@@ -65,6 +65,23 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
+
+			// and
+			4'b0011: begin
+				ALUResult = (A & B);
+				if (ALUResult == 0)
+					Zero = 1;
+			end
+
+			// or
+			4'b0100: begin
+				ALUResult = (A | B);
+				if (ALUResult == 0)
+					Zero = 1;
+			end
+
+			// set less than
+			
 		endcase
 	end
 	
