@@ -80,59 +80,57 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 					Zero = 1;
 			end
 
-            // shift left logical (ALUControl = 5)
-            4'b0101: begin
-                ALUResult = (A << B);
-                if (ALUResult == 0)
-                    Zero = 1;
-             end
+            		// shift left logical (ALUControl = 5)
+            		4'b0101: begin
+	                	ALUResult = (A << B);
+                		if (ALUResult == 0)
+                    			Zero = 1;
+             		end
                 
-            // shift right logical (ALUControl = 6)
-            4'b0110: begin
-                ALUResult = (A >> B);
-                if (ALUResult == 0)
-                    Zero = 1;
-            end     
+            		// shift right logical (ALUControl = 6)
+            		4'b0110: begin
+               			 ALUResult = (A >> B);
+                		if (ALUResult == 0)
+                   			Zero = 1;
+            		end     
 
 			// set less than (ALUControl = 7)
 			4'b0111: begin
-			     if (A < B) begin
-			         ALUResult = 32'h00000001;
-			         Zero = 0;
-			     end
-			     else begin
-			         ALUResult = 32'h00000000;
-			         Zero = 1;
-			     end
-		    end
+			     	if (A < B) begin
+			         	ALUResult = 32'h00000001;
+			         	Zero = 0;
+			     	end
+			     	else begin
+			         	ALUResult = 32'h00000000;
+			         	Zero = 1;
+			     	end
+		    	end
 		    
-		    // equal (ALUControl = 8)
-		    4'b1000: begin
-		      if (A == B) begin
-		          ALUResult = 32'h00000001;
-		          Zero = 0;
-		      end
-		      else begin
-		          ALUResult = 32'h00000000;
-		          Zero = 1;
-		      end
-		    end
+		    	// equal (ALUControl = 8)
+		    	4'b1000: begin
+		      		if (A == B) begin
+		          		ALUResult = 32'h00000001;
+		          		Zero = 0;
+		      		end
+		      		else begin
+		          		ALUResult = 32'h00000000;
+		          		Zero = 1;
+		      		end
+		    	end
 		    
-		    // not equal (ALUControl = 9)
-		    4'b1001: begin
-		      if (A != B) begin
-		          ALUResult = 32'h00000001;
-		          Zero = 0;
-		      end
-		      else begin
-		          ALUResult = 32'h00000000;
-		          Zero = 1;
-		      end
-		    end
-			
+		    	// not equal (ALUControl = 9)
+		    	4'b1001: begin
+		      		if (A != B) begin
+		          		ALUResult = 32'h00000001;
+		          		Zero = 0;
+		      		end
+		      		else begin
+		          		ALUResult = 32'h00000000;
+		          		Zero = 1;
+		      		end
+		    	end	
 		endcase
 	end
-
 endmodule
 
 
