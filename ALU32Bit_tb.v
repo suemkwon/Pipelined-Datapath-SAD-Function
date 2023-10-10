@@ -62,8 +62,8 @@ module ALU32Bit_tb();
   	 #50;
 	
 // and (ALUControl = 3)
-    // case 7
-    A <= 32'h000003E8;
+    	// case 7
+    	A <= 32'h000003E8;
   	B <= 32'h00000112;
    	ALUControl <= 4'b0011;
   	#50;
@@ -71,11 +71,11 @@ module ALU32Bit_tb();
    	A <= 32'h00000009;
    	B <= 32'h00000005;
   	ALUControl <= 4'b0011;
-    #50;
+    	#50;
 	
 // or (ALUControl = 4)
-    // case 9
-    A <= 32'h000003E8;
+    	// case 9
+    	A <= 32'h000003E8;
   	B <= 32'h00000112;
    	ALUControl <= 4'b0100;
   	#50;
@@ -83,11 +83,11 @@ module ALU32Bit_tb();
    	A <= 32'h00000009;
    	B <= 32'h00000005;
   	ALUControl <= 4'b0100;
-    #50;
+    	#50;
     
 // shift left logical (ALUControl = 5)
-    // case 11
-    A <= 32'h000003E8;
+    	// case 11
+    	A <= 32'h000003E8;
   	B <= 32'h00000112;
    	ALUControl <= 4'b0101;
   	#50;
@@ -95,11 +95,11 @@ module ALU32Bit_tb();
  	A <= 32'h00000009;
    	B <= 32'h00000005;
   	ALUControl <= 4'b0101;
-    #50;
+    	#50;
     
 // shift right logical (ALUControl = 6)
-    // case 13
-    A <= 32'h000003E8;
+    	// case 13
+    	A <= 32'h000003E8;
   	B <= 32'h00000112;
    	ALUControl <= 4'b0110;
   	#50;
@@ -107,11 +107,11 @@ module ALU32Bit_tb();
    	A <= 32'h00000005;
    	B <= 32'h00000009;
   	ALUControl <= 4'b0110;
-    #50;
+    	#50;
     
 // set less than (ALUControl = 7)
-    // case 15
-    A <= 32'h000003E8;
+    	// case 15
+    	A <= 32'h000003E8;
   	B <= 32'h00000112;
    	ALUControl <= 4'b0111;
   	#50;
@@ -119,11 +119,11 @@ module ALU32Bit_tb();
    	A <= 32'h00000005;
    	B <= 32'h00000009;
   	ALUControl <= 4'b0111;
-    #50;
+    	#50;
 
 // equal (ALUControl = 8)
     // case 17
-    A <= 32'h000003E8;
+    	A <= 32'h000003E8;
   	B <= 32'h00000112;
    	ALUControl <= 4'b1000;
   	#50;
@@ -131,11 +131,11 @@ module ALU32Bit_tb();
    	A <= 32'h00000009;
    	B <= 32'h00000009;
   	ALUControl <= 4'b1000;
-    #50;
+    	#50;
 
 // not equal (ALUControl = 9)
-    // case 19
-    A <= 32'h000003E8;
+    	// case 19
+    	A <= 32'h000003E8;
   	B <= 32'h00000112;
    	ALUControl <= 4'b1001;
   	#50;
@@ -143,8 +143,7 @@ module ALU32Bit_tb();
    	A <= 32'h00000009;
    	B <= 32'h00000009;
   	ALUControl <= 4'b1001;
-    #50;
+    	#50;
     
 	end
 endmodule
-
