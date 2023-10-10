@@ -93,17 +93,21 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
        		R_Addr[31] <= 32'd0;
    	end
    
-  	 // Write procedure
+  	// Write procedure: address 'WriteRegister' in the register file are modified at the 
+	// rising edge of the clock if 'RegWrite' signal is high
+	
 	always @ (posedge Clk) begin
        		if (RegWrite == 1) begin
         		R_Addr[WriteRegister] <= WriteData;
        		end
    	end
    
-   	// Read procedure
-   	always @ (negedge Clk) begin
-     	ReadData1 <= R_Addr[ReadRegister1];
-      	ReadData2 <= R_Addr[ReadRegister2];
+   	// Read procedure: outputs of registers specified by ReadRegister1 and ReadRegister2 are written into output 
+	// registers ReadData1 and ReadData2 at the falling edge of the clock
+	
+	always @ (negedge Clk) begin // output of register file is written into these registers at the falling edge of the clock
+     		ReadData1 <= R_Addr[ReadRegister1];
+      		ReadData2 <= R_Addr[ReadRegister2];
    	end
 
 endmodule
