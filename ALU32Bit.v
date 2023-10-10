@@ -28,62 +28,111 @@
 
 module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 
-	input [3:0] ALUControl; 		// control bits for ALU operation
-                                
-	// you need to adjust the bitwidth as needed
-	
-	input [31:0] A, B;	   	       // inputs
+	input [3:0] ALUControl; // control bits for ALU operation
+                                // you need to adjust the bitwidth as needed
+	input [31:0] A, B;	    // inputs
 
-	output [31:0] ALUResult;	       // answer
-	output Zero;	    		       // Zero=1 if ALUResult == 0
+	output reg [31:0] ALUResult;	// answer
+	output reg Zero;	    // Zero = 1 if ALUResult == 0
 
-    /* Please fill in the implementation here... */
-
-	always @ (ALUControl, A, B)
-	begin
+	always @ (ALUControl, A, B) begin
 
 		Zero = 0;
 
 		case (ALUControl)
-			// addition
+		
+		// arithmetic operations
+		
+			// addition (ALUControl = 0)
 			4'b0000: begin
 				ALUResult = (A + B);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
 
-			// subtraction
+			// subtraction (ALUControl = 1)
 			4'b0001: begin
 				ALUResult = (A - B);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
 
-			// multiplication
+			// multiplication (ALUControl = 2)
 			4'b0010: begin
 				ALUResult = (A * B);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
 
-			// and
+        // logical operations
+        
+			// and (ALUControl = 3)
 			4'b0011: begin
 				ALUResult = (A & B);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
 
-			// or
+			// or (ALUControl = 4)
 			4'b0100: begin
 				ALUResult = (A | B);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
 
-			// set less than
+            // shift left logical (ALUControl = 5)
+            4'b0101: begin
+                ALUResult = (A << B);
+                if (ALUResult == 0)
+                    Zero = 1;
+             end
+                
+            // shift right logical (ALUControl = 6)
+            4'b0110: begin
+                ALUResult = (A >> B);
+                if (ALUResult == 0)
+                    Zero = 1;
+            end     
+
+			// set less than (ALUControl = 7)
+			4'b0111: begin
+			     if (A < B) begin
+			         ALUResult = 32'h00000001;
+			         Zero = 0;
+			     end
+			     else begin
+			         ALUResult = 32'h00000000;
+			         Zero = 1;
+			     end
+		    end
+		    
+		    // equal (ALUControl = 8)
+		    4'b1000: begin
+		      if (A == B) begin
+		          ALUResult = 32'h00000001;
+		          Zero = 0;
+		      end
+		      else begin
+		          ALUResult = 32'h00000000;
+		          Zero = 1;
+		      end
+		    end
+		    
+		    // not equal (ALUControl = 9)
+		    4'b1001: begin
+		      if (A != B) begin
+		          ALUResult = 32'h00000001;
+		          Zero = 0;
+		      end
+		      else begin
+		          ALUResult = 32'h00000000;
+		          Zero = 1;
+		      end
+		    end
 			
 		endcase
 	end
-	
+
 endmodule
+
 
