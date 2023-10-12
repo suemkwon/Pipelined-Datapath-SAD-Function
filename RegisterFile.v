@@ -68,6 +68,8 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
 	// ReadData2: 32-Bit registered output. 
 	output reg [31:0] ReadData1, ReadData2;
 
+	(* mark_debug = "true" *) reg [31:0] R_Addr [0:31];
+
 	initial begin
        		R_Addr[0] <= 32'd0;
        		R_Addr[1] <= 32'd0;
