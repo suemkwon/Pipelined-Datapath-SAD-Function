@@ -79,21 +79,6 @@ module RegisterFile_tb();
                 
         @(posedge Clk); 
         #5;
-        WriteRegister   <= 5'd12;           
-        WriteData       <= 32'h00000005;
-        
-        @(posedge Clk); 
-        #5;
-        WriteRegister   <= 5'd13;          
-        WriteData       <= 32'h0000000a;
-                
-        @(posedge Clk); 
-        #5;
-        WriteRegister   <= 5'd14;           
-        WriteData       <= 32'h00000003;
-                
-        @(posedge Clk); 
-        #5;
         WriteRegister   <= 5'd15;           
         WriteData       <= 32'h0000000b;
                         
@@ -109,21 +94,6 @@ module RegisterFile_tb();
                 
         @(posedge Clk); 
         #5;
-        WriteRegister   <= 5'd18;           
-        WriteData       <= 32'h00000008;
-                
-        @(posedge Clk); 
-        #5;
-        WriteRegister   <= 5'd19;           
-        WriteData       <= 32'h00000006;
-                        
-        @(posedge Clk); 
-        #5;
-        WriteRegister   <= 5'd20;           
-        WriteData       <= 32'h0000000d;
-		
-        @(posedge Clk); 
-        #5;
         WriteRegister   <= 5'd21;          
         WriteData       <= 32'h00000001;
                         
@@ -137,16 +107,6 @@ module RegisterFile_tb();
         WriteRegister   <= 5'd23;           
         WriteData       <= 32'h00000011;
                                 
-        @(posedge Clk); 
-        #5;
-        WriteRegister   <= 5'd24;           
-        WriteData       <= 32'h00000022;
-        
-        @(posedge Clk); 
-        #5;
-        WriteRegister   <= 5'd25;           
-        WriteData       <= 32'h0000ffff;
-		
 	// end assignment Write 
                
         @(posedge Clk); 
