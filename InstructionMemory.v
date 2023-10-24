@@ -45,22 +45,14 @@ module InstructionMemory(Address, Instruction);
     output reg [31:0] Instruction; 
     
     //2D array for 128 32-Bit element memory
-    reg [31:0] memory [127:0]; 
-    
-    //Index memory array
-    integer i; 
+    reg [31:0] memory [1023:0]; 
     
     initial begin
-        //Intialize index i with 0 and increment 128 32-Bit 
-        for (i = 0; i < 127; i = i + 1) begin 
-            //Multiply index i by 3
-            memory[i] <= i * 32'h00000003; 
-        end
+        $readmemh("lab4.mem", memory);
     end
     
     always @* begin
-        Instruction <= memory[Address[8:2]];
+        Instruction <= memory[Address[11:2]];
     end   
 
 endmodule
-
