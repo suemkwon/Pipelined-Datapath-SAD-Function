@@ -129,10 +129,6 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 		          		Zero = 1;
 		      		end
 		    	end
-
-		// data
-
-		// branch
 			
 		endcase
 	end
