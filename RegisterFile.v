@@ -48,7 +48,7 @@
 // to allow for data multiplexing and setup time.
 ////////////////////////////////////////////////////////////////////////////////
 
-module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2, debug_Reg8, debug_Reg16, debug_Reg17, debug_Reg19, debug_Reg20);
+module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2);
 
 	/* Please fill in the implementation here... */
 	
@@ -67,8 +67,6 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
 	// ReadData1: 32-Bit registered output. 
 	// ReadData2: 32-Bit registered output. 
 	output reg [31:0] ReadData1, ReadData2;
-
-	output [31:0] debug_Reg8, debug_Reg16, debug_Reg17, debug_Reg19, debug_Reg20;
 
 	(* mark_debug = "true" *) reg [31:0] R_Addr [0:31];
 
@@ -134,12 +132,4 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
      		ReadData1 <= R_Addr[ReadRegister1];
       		ReadData2 <= R_Addr[ReadRegister2];
    	end
-
-       	assign debug_Reg8 = R_Addr[8];
-    	assign debug_Reg16 = R_Addr[16];
-    	assign debug_Reg17 = R_Addr[17];
-    	assign debug_Reg19 = R_Addr[19];
-    	assign debug_Reg20 = R_Addr[20];
-
-
 endmodule
