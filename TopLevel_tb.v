@@ -20,11 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module CircuitModule_tb();
+module TopLevel_tb();
     reg Clk, Rst;
     wire [31:0] PCAddResult, PCMux, WriteData, ALUResult;
     
-    CircuitModule CM(
+    TopLevel TL(
         .Rst(Rst), 
         .Clk(Clk), 
         .PCAddResult(PCAddResult), 
