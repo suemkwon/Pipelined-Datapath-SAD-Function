@@ -5,7 +5,7 @@
 // 
 // Create Date: 10/21/2023 03:19:03 PM
 // Design Name: 
-// Module Name: CircuitModule_tb
+// Module Name: TopLevel_tb
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
