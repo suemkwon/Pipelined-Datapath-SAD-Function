@@ -1,0 +1,54 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 10/25/2023 06:51:29 AM
+// Design Name: 
+// Module Name: EX
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module EX(Clk, Rst, AddControl, Jin, ALUSrc, ALUOp, signExIn, ReadData1, ReadData2, inst20to16, inst15to11, RegDst, writeReg, addIn, addOut, ALUResult, instruction10_6, Zero);
+    
+    input [31:0] ReadData1, ReadData2, signExIn, addIn;
+    input [31:0] Jin;
+    input RegDst, ALUSrc, Clk, Rst;
+    input [4:0] inst20to16, inst15to11, instruction10_6;
+    input [5:0] ALUOp;
+    input [1:0] AddControl;
+    
+    output [31:0] addOut, ALUResult;
+    output [4:0] writeReg;
+    output Zero;
+    
+    wire [31:0] muxOut, shiftOut;
+    wire [5:0] ALUcontrolOut;
+    wire Write;
+    wire [31:0] Jaddress;
+    
+    // Mux32Bit2To1(out, inA, inB, sel)
+    Mux32Bit2To1 a(muxOut, ReadData2, signExIn, ALUSrc);
+    // ALUControl(ALUOp, SignEx, out)
+    ALUControl b(ALUOp, signExIn[5:0], ALUcontrolOut);
+    // ALU32Bit(ALUControl, A, B, ALUResult, Zero)
+    ALU32Bit c(ALUcontrolOut, ReadData1, muxOut, ALUResult, Zero);
+    // ShiftLeft(in, out);
+    ShiftLeft d(signExIn, shiftOut);
+    // ShiftLeft(in, out);
+    ShiftLeft e(Jin, Jaddress);
+    // Adder(addIn, shiftIn, control, A, JAddress, out)
+    Adder f(addIn, shiftOut, AddControl, ReadData1, Jaddress, addOut);
+
+endmodule
