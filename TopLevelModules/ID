@@ -1,0 +1,48 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 10/25/2023 06:51:29 AM
+// Design Name: 
+// Module Name: ID
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module ID(Clk, Rst, controlMux, Instruction, WriteRegister, WriteData, RegWrite, signExtOut, ReadData1, ReadData2, WB, M, ALUSrc, ALUOp, RegDst, AddControl, PCAddress, op, func);
+    input[31:0] Instruction, WriteData, PCAddress;
+    input[4:0] WriteRegister;
+    input Clk, Rst, RegWrite, controlMux;
+    input [5:0] op, func;
+    
+    output [31:0] signExtOut, ReadData1, ReadData2;
+    output ALUSrc, RegDst;
+    output [1:0]  WB, AddControl;
+    output [4:0] M;
+    output [5:0] ALUOp;
+    
+    wire PCWrite;
+    wire [4:0] Mout;
+    wire [1:0] WBout, AddControllerout;
+    wire RegDstout, PCWriteout,  ALUSrcout;
+    wire [5:0] ALUOpout;
+    
+    // SignExtension(in, out)
+    SignExtension a(Instruction[15:0], signExtOut);
+    // Controller(op, func, ALUOp, ALUSrc, RegDst, PCWrite, WB, AddController, M)
+    Controller b(op, func, ALUOpout, ALUSrcout, RegDstout, PCWriteout, WBout, AddControllerout, Mout);
+    // RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2);
+    RegisterFile c(Instruction[25:21], Instruction[20:16], WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2);
+    
+endmodule
