@@ -21,28 +21,28 @@
 
 
 module CircuitModule_tb();
-
-    reg Clk_tb, Rst_tb;
-    wire [31:0] Instruction_tb;
+    reg Clk, Rst;
+    wire [31:0] PCAddResult, PCMux, WriteData, ALUResult;
     
-    circuitMother tb1(Clk_tb, Rst_tb, Instruction_tb);
-    
-    // Clock Procedure
-    always begin
-       Clk_tb <= 0;
-       #100;
-       Clk_tb <= 1;
-       #100;
-    end
+    CircuitModule CM(
+        .Rst(Rst), 
+        .Clk(Clk), 
+        .PCAddResult(PCAddResult), 
+        .PCMux(PCMux), 
+        .WriteData(WriteData), 
+        .ALUResult(ALUResult)
+   );
         
-       
+    
     initial begin
+        Clk <= 0;
+        forever #10 Clk <= ~Clk;   
+    end
+    
+    initial begin
+        Rst <= 1;
+        #15 Rst <= 0;
         
-       // Start at initial
-       Rst_tb <= 1;
-       @ (posedge Clk_tb);
-       #100 Rst_tb <= 0;
-   
     end
 
 endmodule
