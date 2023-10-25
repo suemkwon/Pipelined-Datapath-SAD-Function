@@ -1,11 +1,13 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+//
+// ECE369A
+//
+//Student(s) Name and Last Name: Justyn Arnold (33%), George Collias (33%), Sue Kwon (33%)
 // 
 // Create Date: 10/21/2023 03:06:12 PM
 // Design Name: 
-// Module Name: CircuitModule
+// Module Name: TopLevel
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,7 +22,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module CircuitModule(Rst, Clk, PCAddResult, PCMux, WriteData, ALUResult);
+module TopLevel(Rst, Clk, PCAddResult, PCMux, WriteData, ALUResult);
 
     input Rst, Clk;
     output [31:0] PCAddResult, PCMux, WriteData, ALUResult;
