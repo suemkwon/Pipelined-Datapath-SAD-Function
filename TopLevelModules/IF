@@ -1,0 +1,40 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 10/25/2023 06:51:29 AM
+// Design Name: 
+// Module Name: IF
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module IF(Rst, Clk, PCWrite, Instruction, PCSrc, JumpAddress, PCAddResult, PCResult);
+
+    input Rst, Clk, PCSrc, PCWrite;
+    input[31:0] JumpAddress;
+    output [31:0] PCAddResult,Instruction, PCResult;
+    
+    wire[31:0] out;
+    
+    //PCAdder(PCResult, PCAddResult)
+    PCAdder a(PCResult, PCAddResult);
+    // Mux32Bit2To1(out, inA, inB, sel)
+    Mux32Bit2To1 b(out, PCAddResult, JumpAddress, PCSrc);
+    // ProgramCounter(Address, PCResult, Reset, Clk)
+    ProgramCounter c(PCWrite, PCResult, Rst, Clk);
+    // InstructionMemory(Address, Instruction)
+    InstructionMemory d(PCWrite, Instruction);
+    
+endmodule
