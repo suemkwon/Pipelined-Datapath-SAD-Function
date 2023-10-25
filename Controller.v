@@ -56,7 +56,7 @@ module Controller(op, func, ALUOp, ALUSrc, RegDst, PCWrite, WB, AddController, M
                   end
                   
                   // sub (Subtract)
-                  else if ((op == 6'b000000) && (func == 100010)) begin
+        else if ((op == 6'b000000) && (func == 6'b100010)) begin
                     WB <= 2'b01;
                     ALUSrc <= 0;
                     RegDst <= 1;
@@ -65,7 +65,7 @@ module Controller(op, func, ALUOp, ALUSrc, RegDst, PCWrite, WB, AddController, M
                   end
                   
                   // mul (Multiply)    
-                  else if ((op == 6'b000000) && (func == 011000)) begin
+        else if ((op == 6'b000000) && (func == 6'b011000)) begin
                     WB <= 2'b01;
                     ALUSrc <= 0;
                     RegDst <= 1;
@@ -192,7 +192,7 @@ module Controller(op, func, ALUOp, ALUSrc, RegDst, PCWrite, WB, AddController, M
                   end
                   
                   // jr (jump register)
-                  else if ((op == 6'b000000) && (func == 001000)) begin
+        else if ((op == 6'b000000) && (func == 6'b001000)) begin
                     AddController <= 1;
                     ALUSrc <= 1'b0;
                     RegDst <= 1'b0;
