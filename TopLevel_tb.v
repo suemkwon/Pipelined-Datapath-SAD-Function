@@ -21,28 +21,29 @@
 
 
 module TopLevel_tb();
-    reg Clk, Rst;
-    wire [31:0] PCAddResult, PCMux, WriteData, ALUResult;
-    
-    TopLevel TL(
-        .Rst(Rst), 
-        .Clk(Clk), 
-        .PCAddResult(PCAddResult), 
-        .PCMux(PCMux), 
-        .WriteData(WriteData), 
-        .ALUResult(ALUResult)
-   );
-        
-    
-    initial begin
-        Clk <= 0;
-        forever #10 Clk <= ~Clk;   
-    end
-    
-    initial begin
-        Rst <= 1;
-        #15 Rst <= 0;
-        
-    end
 
+    reg clk;
+    reg rst;
+    wire [31:0] finalData;
+    wire [31:0] ProgramCounter;
+ 
+    
+    TopLevel tl( 
+              .clk(clk),
+              .rst(rst),
+              .finalData(finalData),
+              .ProgramCounter(ProgramCounter)
+              );
+         
+    initial begin
+        clk <= 1'b0;
+        forever #50 clk = ~clk;
+    end     
+    
+    initial begin
+        rst <= 1;
+        #20; 
+        rst <= 0;
+    end                                       
+endmodule
 endmodule
