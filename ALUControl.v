@@ -20,54 +20,61 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ALUControl(ALUOp, SignEx, out);
-    input [5:0] SignEx;
-    input [5:0] ALUOp;
+module ALUControl(funct, ALUOp, rBit6, rBit21, ALUControl, ALUSrc2);
+
+    input [5:0] funct;
+    input [3:0] ALUOp;
+    input rBit6, rBit21;
+    output reg [3:0] ALUControl;
+    output reg ALUSrc2;
     
-    output reg [5:0] out;
-    
-    always @ (*) begin
-       
-        if(ALUOp == 0) begin
-            if (SignEx == 6'b100000) begin // add
-                out <= 0;
-            end
-            else if(SignEx == 6'b100010) begin // sub
-                out <= 2;
-            end
-            else if(SignEx == 6'b011000) begin // mul
-                out <= 3;
-            end
-            else if (SignEx == 6'b001000) begin // jr
-                out <= 17;
-            end
-            else if(SignEx == 6'b100100) begin // and
-                out <= 19;
-            end
-            else if(SignEx == 6'b100101) begin // or
-                out <= 21;
-            end
-            else if(SignEx == 6'b100111) begin // nor
-                out <= 22;
-            end
-            else if(SignEx == 6'b100110) begin // xor
-                out <= 23;
-            end
-            else if(SignEx == 6'b000000) begin // sll
-                out <= 26;
-            end
-            else if(SignEx == 6'b000010) begin // srl
-                out <= 27;
-            end
-            else if(SignEx == 6'b101010) begin // slt
-                out <= 28;
-            end
-            else begin
-                out <= 0;
-            end
-        end
-        else begin
-            out <= ALUOp;
-        end
+    initial begin
+        ALUControl <= 0;
     end    
+    
+    always @(ALUOp or funct) begin
+        
+        if(ALUOp == 4'b0000)    begin  
+            if(funct == 6'b100000)  begin
+                ALUSrc2 <= 0;
+                ALUControl <= 4'b0000;
+                end
+            else if(funct == 6'b100001) begin 
+                ALUSrc2 <= 0;
+                ALUControl <= 4'b0000;
+                end
+            else if(funct == 6'b100010) begin 
+                ALUSrc2 <= 0;
+                ALUControl <= 4'b0001;
+                end
+            else if(funct == 6'b011000) begin 
+                ALUSrc2 <= 0;
+                ALUControl <= 4'b0010;
+                end
+            else if(funct == 6'b011001) begin
+                ALUSrc2 <= 0;
+                ALUControl <= 4'b1111;
+                end
+            else if(funct == 6'b100100) begin 
+                ALUSrc2 <= 0;
+                ALUControl <= 4'b0011;
+                end
+            else if(funct == 6'b100101) begin
+                ALUSrc2 <= 0;
+                ALUControl <= 4'b0100;
+                end
+            else if(funct == 6'b100111) begin 
+                ALUSrc2 <= 0;
+                ALUControl <= 4'b0101;
+                end
+            else if(funct == 6'b100110) begin
+                ALUSrc2 <= 0;
+                ALUControl <= 4'b0110;
+                end
+            else if(funct == 6'b000000) begin 
+                ALUSrc2 <= 1;
+                ALUControl <= 4'b0111;
+                end
+            end                            
+    end  
 endmodule
