@@ -5,15 +5,21 @@
 // Module - SignExtension.v
 // Description - Sign extension module.
 ////////////////////////////////////////////////////////////////////////////////
-module SignExtension(in, out);
+module SignExtension(in, out, zeroExt);
 
-    /* A 16-Bit input word */
     input [15:0] in;
+    input zeroExt;
     
-    /* A 32-Bit output word */
-    output [31:0] out;
-    
-    /* Fill in the implementation here ... */
-    assign out = {{16{in[15]}}, in};
+    output reg [31:0] out;
 
+    
+    always @(in, zeroExt) begin
+    
+        if(zeroExt == 1)begin
+            out <= {{16'b0},in};
+        end    
+        else begin
+            out <= {{16{in[15]}}, in};
+        end    
+    end  
 endmodule
