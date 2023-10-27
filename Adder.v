@@ -20,26 +20,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Adder(addIn, shiftIn, control, A, JAddress, out);
-    input [31:0] addIn, shiftIn, A, JAddress;
-    input [1:0] control;
-    output reg [31:0]out;
+module Adder(pc_plus4, shiftleft, out);
+
+    input [31:0] pc_plus4, shiftleft;
+    output reg [31:0] out;
     
     initial begin
         out <= 0;
-    end
-        
-        
-    always @(*) begin
-     if(control == 0) begin
-        out <= $signed(addIn) + $signed(shiftIn);
-    end
-     else if(control == 1) begin
-       out <= A;
-     end
-     else if(control == 2) begin
-       out <= JAddress;
-     end
-    end
+    end    
     
+    always @(pc_plus4 or shiftleft) begin
+        out <= pc_plus4 + shiftleft;
+    end    
+
 endmodule
