@@ -19,15 +19,19 @@
 // 4 (i.e., PCAddResult = PCResult + 4).
 ////////////////////////////////////////////////////////////////////////////////
 
-module PCAdder(PCResult, PCAddResult);
+module PCAdder(PCResult, PCAddResult, clk, rst);
 
-    input [31:0] PCResult; //32-Bit input port
+    input [31:0]  PCResult;
+    input clk, rst;
+    
+    output reg [31:0] PCAddResult;
 
-    output reg [31:0] PCAddResult; //32-Bit registered output port
+    initial begin
+        PCAddResult <= 0;
+    end    
 
-    always @(PCResult)begin
-        PCAddResult <= PCResult + 32'h00000004; //computes PC + 4
-    end
-
+    always @(PCResult) begin
+    	PCAddResult <= PCResult + 32'h000000004;
+    end       
+    
 endmodule
-
