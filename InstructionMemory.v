@@ -36,12 +36,10 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-module InstructionMemory(Address, Instruction); 
+module InstructionMemory(PCResult, Instruction);
+
+    input [31:0] PCResult;  
     
-    // 32-Bit address input port
-    input [31:0] Address;  
-    
-    // 32-Bit registered output port
     output reg [31:0] Instruction; 
     
     //2D array for 128 32-Bit element memory
@@ -52,7 +50,7 @@ module InstructionMemory(Address, Instruction);
     end
     
     always @* begin
-        Instruction <= memory[Address[11:2]];
+        Instruction <= memory[PCResult[11:2]];
     end   
 
 endmodule
