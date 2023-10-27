@@ -22,60 +22,75 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module TopLevel(Rst, Clk, PCAddResult, PCMux, WriteData, ALUResult);
+module TopLevel(clk, rst, finalData, ProgramCounter);
+    
+    input clk, rst;
+    output wire [31:0] finalData;
+    output wire [31:0] ProgramCounter;
+    
+    // Instruction Fetch 
+    wire [31:0] instr_address, instruction; 
+    // Pipeline Register Outputs
+    wire [31:0] instruction_out, pcresult_plus4_ID, pcresult_plus4_EX, pcresult_plus4_MEM, pcresult_plus4_out, pcresult_plus4_out2; 
+    wire [5:0] funct;
+    wire [31:0] A, B, signExtended_shift; 
+    wire [31:0] datatowrite; 
+    wire [3:0] aluControl, ALUOp_ID, ALUOp_EX;
+    wire aluSrc2, regWrite_WB; 
+    wire [4:0] readRegRs, readRegRt, regRd;
+    wire [5:0] opCode;
+    wire [15:0] immediate;
+    wire [31:0] address_added, address_added_out;
+    wire pcSrc_ID, regWrite_ID, regDst_ID, aluSrc_ID, branch_ID, memWrite_ID, memRead_ID, memToReg_ID, zeroExt_ID;
+    wire pcSrc_EX, regWrite_EX, regDst_EX, aluSrc_EX, branch_EX, memWrite_EX, memRead_EX, memToReg_EX, zeroExt_EX;
+    wire regWrite_MEM, memToReg_MEM, memWrite_MEM, memRead_MEM, branch_MEM, pcSrc_MEM;  
+    wire memToReg_WB, zero_EX, zero_MEM;
+    wire [4:0] writeReg_EX, writeReg_MEM, writeReg_WB, destinationReg_EX, regRt_EX;
+    wire [31:0] aluResult_EX, aluResult_MEM, aluResult_WB;
+    wire [31:0] immediate_ID, immediate_EX, shiftAmount_ID, shiftAmount_EX, readData1_ID, readData2_ID, pc_plus4, nextPc;
+    wire [31:0] readData1_EX, readData2_EX,readData2_MEM, readMemData_MEM, readMemData_WB, pcresult;
+    wire [5:0] funct_EX;
+    wire bit6_EX, bit21_EX;     
+     
+    PCAdder a(ProgramCounter, pc_plus4, clk, rst);
+    ProgramCounter b(pc_plus4, ProgramCounter, rst, clk);
+    InstructionMemory c(ProgramCounter, instruction);
+    IF_ID_REG d(clk, instruction, pc_plus4, instruction_out, pcresult_plus4_out);
+    
+    // Instruction Decode
+    assign readRegRs = instruction_out[25:21];
+    assign readRegRt = instruction_out[20:16];
+    assign opCode = instruction_out[31:26];
+    assign regRd = instruction_out[15:11];
+    assign immediate = instruction_out[15:0];
+    assign funct = instruction_out[5:0];
+    
+    Controller e(opCode, pcSrc_ID, regWrite_ID, regDst_ID, aluSrc_ID, branch_ID, memWrite_ID, memRead_ID, memToReg_ID, zeroExt_ID, ALUOp_ID);
+    SignExtension f(immediate, immediate_ID, zeroExt_ID);
+    SignExtend g(instruction_out[10:6], shiftAmount_ID);
+    RegisterFile h(clk, readRegRs, readRegRt, readData1_ID, readData2_ID, writeReg_WB, finalData, regWrite_WB); 
+    ID_EX_REG i(clk, regWrite_ID, regDst_ID, aluSrc_ID, branch_ID, memWrite_ID, memRead_ID, memToReg_ID, ALUOp_ID, pcSrc_ID, readData1_ID, readData2_ID, 
+                shiftAmount_ID, immediate_ID, pcresult_plus4_out, instruction_out[6], funct, instruction_out[21], readRegRt, regRd,regWrite_EX, 
+                regDst_EX, aluSrc_EX, branch_EX, memWrite_EX, memRead_EX, memToReg_EX, ALUOp_EX, pcSrc_EX, readData1_EX, readData2_EX, 
+                shiftAmount_EX, immediate_EX, pcresult_plus4_ID, bit6_EX, funct_EX, bit21_EX, regRt_EX, destinationReg_EX);
+                    
+    // Execute             
+    Mux5Bit2To1 j(writeReg_EX, regRt_EX, destinationReg_EX, regDst_EX);
+    Mux32Bit2To1 k(B, readData2_EX, immediate_EX, aluSrc_EX); 
+    ALUControl l(funct_EX, ALUOp_EX, bit6_EX, bit21_EX, aluControl, aluSrc2);
+    Mux32Bit2To1 m(A, readData1_EX, shiftAmount_EX, aluSrc2);
+    ALU32Bit n(aluControl, A, B, aluResult_EX, zero_EX, clk); 
+    ShiftLeft o(immediate_EX, signExtended_shift);
+    Adder p(pcresult_plus4_ID, signExtended_shift, pcresult_plus4_EX);
+    EX_MEM_REG q(clk, regWrite_EX, branch_EX, memWrite_EX, memRead_EX, memToReg_EX, pcSrc_EX, zero_EX, aluResult_EX, readData2_EX, pcresult_plus4_EX, writeReg_EX,regWrite_MEM, 
+                 branch_MEM, memWrite_MEM, memRead_MEM, memToReg_MEM, pcSrc_MEM, zero_MEM, aluResult_MEM, readData2_MEM, pcresult_plus4_MEM, writeReg_MEM);
+    
+    // Memory 
+    DataMemory r(clk, aluResult_MEM, readData2_MEM, memWrite_MEM, memRead_MEM, readMemData_MEM);
+    MEM_WB_REG s(clk, regWrite_MEM, memToReg_MEM, readMemData_MEM, aluResult_MEM, writeReg_MEM, regWrite_WB, memToReg_WB, readMemData_WB, aluResult_WB, writeReg_WB);
+    
+    // Write Back
+    Mux32Bit2To1 t(finalData, readMemData_WB, aluResult_WB, memToReg_WB);
 
-    input Rst, Clk;
-    output [31:0] PCAddResult, PCMux, WriteData, ALUResult;
-
-    wire [31:0] Instin, Instruction, addOutIF_Reg, WriteData, ReadData1, ReadData2, signExtOut, BranchADDoutID_Reg, BranchAddout, MEMReadData, ReadData1outtomux, ReadData2outtomux, MEMReadDataout;
-    wire [31:0] Jaddress, Jaddressout, ReadData1out, ReadData2out, extendInstruction15_0out, AddOut, ReadData2MEMout, ALUResultoutMEM_Reg, ALUResultOut;
-    wire [5:0] ALUOp, ALUOpout;
-    wire [4:0] WriteRegister, Instruction20_16out, Instruction15_11out,Instruction25_21out, writeRegout, WriteRegMEMout;
-    wire [4:0] M, Mout;
-    wire [1:0] WB, WBout, WBMEMout, AddControl, AddControlOut, MemWrite, MemRead, MuxA, MuxB;
-    wire PCSrc, RegWrite, ALUSrc, RegDst, RegDstout, ALUSrcout, Zero, ZeroOut, MBranch, MEMtoReg;
-    wire PCWrite, IF_ID_Write, controlMux;
-
-    // IF(Rst, Clk, PCWrite, Instruction, PCSrc, JumpAddress, PCAddResult, PCResult)
-    IF a(Rst, Clk, PCWrite, Instin, PCSrc, BranchAddout, PCAddResult, PCMux);
     
-    // IFID(Clk, Rst, PCSrc, IFIDWrite, addIn, addOut, IMin, IMout)
-    IFID b(Clk, Rst, PCSrc, IF_ID_Write, PCAddResult, addOutIF_Reg, Instin, Instruction);
-    
-    // ID(Clk, Rst, controlMux, Instruction, WriteRegister, WriteData, RegWrite, signExtOut, ReadData1, ReadData2, WB, M, ALUSrc, ALUOp, RegDst, AddControl, PCAddress)
-    ID c(Clk, Rst, controlMux, Instruction, WriteRegister, WriteData, RegWrite, signExtOut, ReadData1, ReadData2, WB, M, ALUSrc, ALUOp, RegDst, AddControl, addOutIF_Reg);
-    
-    // IDEX(Clk, Rst, PCSrc, Instruction25to21, AddControl, Jaddress, WBin, Min, BranchADDin, 
-    // ReadData1, ReadData2, extendInstruction15to0, Instruction20to16, Instruction15to11, 
-    // RegDst, ALUOp, ALUSrc, WBout, Mout, BranchADDout, ReadData1out, ReadData2out, 
-    // extendInstruction15to0out, Instruction20to16out, Instruction15to11out, RegDstout, ALUOpout, 
-    // ALUSrcout, Jout, AddControlOut, Instruction25to21out)
-    IDEX d(Clk, Rst, PCSrc, Instruction[25:21], AddControl, Jaddress, WB, M, addOutIF_Reg, 
-    ReadData1, ReadData2, signExtOut, Instruction[20:16], Instruction[15:11], 
-    RegDst, ALUOp, ALUSrc, WBout, Mout, BranchADDoutID_Reg, ReadData1outtomux, ReadData2outtomux, 
-    extendInstruction15_0out, Instruction20_16out, Instruction15_11out, RegDstout, ALUOpout, 
-    ALUSrcout, Jaddressout, AddControlOut, Instruction25_21out);    
-
-    // Mux32Bit2To1(out, inA, inB, sel)
-    Mux32Bit2To1 e(ReadData1out, ReadData1outtomux, ALUResultoutMEM_Reg, MuxA);
-    
-    // Mux32Bit2To1(out, inA, inB, sel)
-    Mux32Bit2To1 f(ReadData2out, ReadData2outtomux, ALUResultoutMEM_Reg, MuxB);
-
-    // EX(Clk, Rst, AddControl, Jin, ALUSrc, ALUOp, signExIn, ReadData1, ReadData2, inst20to16, inst15to11, RegDst, writeReg, addIn, addOut, ALUResult, instruction10_6, Zero)
-    EX g(Clk, Rst, AddControlOut, Jaddressout, ALUSrcout, ALUOpout, extendInstruction15_0out, ReadData1out, ReadData2out, Instruction20_16out, Instruction15_11out, RegDstout, writeRegout, BranchADDoutID_Reg, AddOut, ALUResult, extendInstruction15_0out[10:6], Zero);
-    
-    // EXMEM(Rst, Clk, PCSrc, WBin, Min, BranchAdd, ALUResult, ALUZero, WriteReg, ReadData2, 
-    // WBout, MBranch, MemWrite, MemRead, BranchAddout, ALUResultout, ALUZeroOut, WriteRegout, ReadData2out)
-    EXMEM h(Rst, Clk, PCSrc, WBout, Mout, AddOut, ALUResult, Zero, writeRegout, ReadData2out, 
-    WBMEMout, MBranch, MemWrite, MemRead, BranchAddout, ALUResultoutMEM_Reg, ZeroOut, WriteRegMEMout, ReadData2MEMout);
-    
-    // MEM(Rst, Clk, ALUResult, ReadData2, MemWrite, MemRead, ReadData1, branch, PCSrc, zero)
-    MEM i(Rst, Clk, ALUResultoutMEM_Reg, ReadData2MEMout, MemWrite, MemRead, MEMReadData, MBranch, PCSrc, ZeroOut);
-    
-    // MEMWB(Rst, Clk, WBin, ReadData, ALUResult, WriteReg, MemtoReg, RegWrite, ReadDataOut, ALUResultOut, WriteRegOut)
-    MEMWB j(Rst, Clk, WBMEMout, MEMReadData, ALUResultoutMEM_Reg, WriteRegMEMout, MEMtoReg, RegWrite, MEMReadDataout, ALUResultOut, WriteRegister);
-    
-    // WB(Clk, Rst, ReadData, ALUout, WriteData, MEMtoReg)
-    WB k(Clk, Rst, MEMReadDataout, ALUResultOut, WriteData, MEMtoReg);
 endmodule
