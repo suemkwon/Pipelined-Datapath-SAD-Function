@@ -4,22 +4,22 @@
 // Module Name: TopLevel_tb
 // 
 // Additional Comments:
+//
+// Last Updated: 11:00 AM 10/28/23
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
 
 module TopLevel_tb();
 
-    reg clk;
-    reg rst;
-    wire [31:0] finalData;
-    wire [31:0] ProgramCounter;
+    reg clk, rst;
+    wire [31:0] WriteData, ProgramCounter;
  
     
     TopLevel tl( 
               .clk(clk),
               .rst(rst),
-              .finalData(finalData),
+              .WriteData(WriteData),
               .ProgramCounter(ProgramCounter)
               );
          
@@ -32,5 +32,6 @@ module TopLevel_tb();
         rst <= 1;
         #20; 
         rst <= 0;
-    end                                       
+    end   
+                                        
 endmodule
