@@ -1,11 +1,8 @@
 `timescale 1ns / 1ps
-
-////////////////////////////////////////////////////////////////////////////////
-// ECE369A - Computer Architecture
-// Laboratory  
-// Module - PCAdder.v
-// Description - 32-Bit program counter (PC) adder.
-// 
+//////////////////////////////////////////////////////////////////////////////////
+//  
+// Module Name: PCAdder
+//
 // INPUTS:-
 // PCResult: 32-Bit input port.
 // 
@@ -17,11 +14,17 @@
 // PC, and whose second input is a hard-wired 4) that computes the current 
 // PC + 4. The result should always be an increment of the signal 'PCResult' by 
 // 4 (i.e., PCAddResult = PCResult + 4).
-////////////////////////////////////////////////////////////////////////////////
+// 
+// Additional Comments:
+//
+// Last Updated: 10:12 AM 10/28/23 by Sue
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
 
 module PCAdder(PCResult, PCAddResult, clk, rst);
 
-    input [31:0]  PCResult;
+    input [31:0] PCResult;
     input clk, rst;
     
     output reg [31:0] PCAddResult;
