@@ -4,24 +4,26 @@
 // Module Name: IF_ID_REG
 // 
 // Additional Comments:
+//
+// Last Updated 10:17 AM 10/28/2023 by Sue
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module IF_ID_REG(clk, instruction_in, PC_Plus4_In, instruction_out, PC_Plus4_Out);
+module IF_ID_REG(instructionIn, PCPlus4In, instructionOut, PCPlus4Out, clk);
 
     input clk;
-    input [31:0] instruction_in, PC_Plus4_In;
-    output reg [31:0] instruction_out, PC_Plus4_Out;
+    input [31:0] instructionIn, PCPlus4In;
+    output reg [31:0] instructionOut, PCPlus4Out;
     
     initial begin
-        instruction_out = 0;
-        PC_Plus4_Out = 0;
+        instructionOut = 0;
+        PCPlus4Out = 0;
     end    
     
-    always @(posedge clk)   begin
-        instruction_out <= instruction_in;
-        PC_Plus4_Out <= PC_Plus4_In;
+    always @(posedge clk) begin
+        instructionOut <= instructionIn;
+        PCPlus4Out <= PCPlus4In;
     end
+    
 endmodule
-
