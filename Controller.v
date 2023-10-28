@@ -1,27 +1,18 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
 // 
-// Create Date: 10/20/2023 02:58:31 PM
-// Design Name: 
 // Module Name: Controller
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
 // 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
 // Additional Comments:
+//
+// Last Updated: 10:20 AM 10/28/23 by Sue
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module Controller(opCode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt, ALUOp);
 
-    input [5:0] opCode;
+module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt, ALUOp);
+
+    input [5:0] opcode;
     output reg PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt;
     output reg [3:0] ALUOp;
     
@@ -37,9 +28,9 @@ module Controller(opCode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
        zeroExt<= 0;
      end   
 
-    always @(opCode)    begin
+    always @(opcode)    begin
         
-    case(opCode)
+    case(opcode)
         6'b000000:  begin   
         PCSrc <= 0;
         RegWrite <= 1;
@@ -162,6 +153,5 @@ module Controller(opCode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         end
         endcase    
     end
-
 
 endmodule
