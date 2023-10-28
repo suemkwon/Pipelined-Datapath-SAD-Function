@@ -4,6 +4,8 @@
 // Module Name: SignExtend
 // 
 // Additional Comments:
+//
+// Last Updated: 10:23 AM 10/28/23 by Sue
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -17,3 +19,5 @@ module SignExtend(in, out);
     always @(in) begin
         out = in;
     end
+    
+endmodule
