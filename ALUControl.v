@@ -5,7 +5,7 @@
 // 
 // Additional Comments:
 //
-// Last Updated: 10:44 AM 10/28/23 by Sue
+// Last Updated: 11:42 AM 10/28/23 by Sue
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -15,7 +15,7 @@ module ALUControl(funct, ALUOp, rBit6, rBit21, ALUControl, ALUSrc2);
     input [5:0] funct;
     input [3:0] ALUOp;
     input rBit6, rBit21;
-    output reg [3:0] ALUControl;
+    output reg [4:0] ALUControl;
     output reg ALUSrc2;
     
     initial begin
@@ -24,48 +24,47 @@ module ALUControl(funct, ALUOp, rBit6, rBit21, ALUControl, ALUSrc2);
     
     always @(ALUOp or funct) begin
         
-        if(ALUOp == 4'b0000)    begin  
+        ALUSrc2 <= 0;
+        
+            // add
             if(funct == 6'b100000)  begin
-                ALUSrc2 <= 0;
-                ALUControl <= 4'b0000;
+                ALUControl <= 5'b00000;
                 end
-            else if(funct == 6'b100001) begin 
-                ALUSrc2 <= 0;
-                ALUControl <= 4'b0000;
-                end
+            // sub
             else if(funct == 6'b100010) begin 
-                ALUSrc2 <= 0;
-                ALUControl <= 4'b0001;
+                ALUControl <= 5'b00010;
                 end
+            // mult
             else if(funct == 6'b011000) begin 
-                ALUSrc2 <= 0;
-                ALUControl <= 4'b0010;
+                ALUControl <= 5'b00011;
                 end
-            else if(funct == 6'b011001) begin
-                ALUSrc2 <= 0;
-                ALUControl <= 4'b1111;
-                end
+            // and
             else if(funct == 6'b100100) begin 
-                ALUSrc2 <= 0;
-                ALUControl <= 4'b0011;
+                ALUControl <= 5'b10011;
                 end
+            // or
             else if(funct == 6'b100101) begin
-                ALUSrc2 <= 0;
-                ALUControl <= 4'b0100;
+                ALUControl <= 5'b10101;
                 end
+            // nor
             else if(funct == 6'b100111) begin 
-                ALUSrc2 <= 0;
-                ALUControl <= 4'b0101;
+                ALUControl <= 5'b10110;
                 end
+            // xor
             else if(funct == 6'b100110) begin
-                ALUSrc2 <= 0;
-                ALUControl <= 4'b0110;
+                ALUControl <= 5'b10111;
                 end
+            // sll
             else if(funct == 6'b000000) begin 
-                ALUSrc2 <= 1;
-                ALUControl <= 4'b0111;
+                ALUControl <= 5'b11010;
                 end
+            // srl
+            else if(funct == 6'b000010) begin
+                ALUControl <= 5'b11011;
+                end
+            // slt
+            else if(funct == 6'b101010) begin
+                ALUControl <= 5'b11100;
+                end     
             end                            
-    end  
-    
 endmodule
