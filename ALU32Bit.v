@@ -24,7 +24,7 @@
 //
 // Additional Comments:
 //
-// Last Updated: 10:46 AM 10/28/23 by Sue
+// Last Updated: 11:30 AM 10/28/23 by Sue
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -138,7 +138,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
             // bgez (branch if greater than or equal to zero)
 			// ALUControl = 10
 			5'b01010: begin
-				ALUResult = (A << B);
+				ALUResult = (A >= 0);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
@@ -146,7 +146,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 			// beq (branch on equal)
 			// ALUControl = 11
 			5'b01011: begin
-				ALUResult = (A << B);
+				ALUResult = (A == B);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
@@ -154,7 +154,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 			// bne (branch on not equal)
 			// ALUControl = 12
 			5'b01100: begin
-				ALUResult = (A << B);
+				ALUResult = (A != B);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
@@ -162,7 +162,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 			// bgtz (branch on greater than zero)
 			// ALUControl = 13
 			5'b01101: begin
-				ALUResult = (A << B);
+				ALUResult = (A > 0);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
@@ -170,7 +170,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 			// blez (branch on less than or equal to zero)
 			// ALUControl = 14
 			5'b01110: begin
-				ALUResult = (A << B);
+				ALUResult = (A <= 0);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
@@ -178,7 +178,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 			// bltz (branch on less than zero)
 			// ALUControl = 15
 			5'b01111: begin
-				ALUResult = (A << B);
+				ALUResult = (A < 0);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
@@ -186,7 +186,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 			// j (jump)
 			// ALUControl = 16
 			5'b10000: begin
-				ALUResult = (A << B);
+				ALUResult = (A == B);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
@@ -194,7 +194,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 			// jr (jump register)
 			// ALUControl = 17
 			5'b10001: begin
-				ALUResult = (A << B);
+				ALUResult = (A == B);
 				if (ALUResult == 0)
 					Zero = 1;
 			end
@@ -202,7 +202,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 			// jal (jump and link)
 			// ALUControl = 18
 			5'b10010: begin
-				ALUResult = (A << B);
+				ALUResult = (A + 4);
 				if (ALUResult == 0)
 					Zero = 1;
 			end   
@@ -297,15 +297,10 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
             // slti (Set on less than immediate)
 			// ALUControl = 29
 			5'b11101: begin
-			     if (A < B) begin
-			         ALUResult = 32'h00000001;
-			         Zero = 0;
-			     end
-			     else begin
-			         ALUResult = 32'h00000000;
-			         Zero = 1;
-			     end
-		    end
+			    ALUResult = (A ^ B);
+                if (ALUResult == 0)
+                    Zero = 1;
+		   end
 		endcase
 	end
 
