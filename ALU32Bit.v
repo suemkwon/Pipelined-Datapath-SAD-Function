@@ -1,10 +1,7 @@
 `timescale 1ns / 1ps
-
-////////////////////////////////////////////////////////////////////////////////
-// ECE369 - Computer Architecture
-// 
-// Module - ALU32Bit.v
-// Description - 32-Bit wide arithmetic logic unit (ALU).
+//////////////////////////////////////////////////////////////////////////////////
+//
+// Module Name: ALU32Bit
 //
 // INPUTS:-
 // ALUControl: N-Bit input control bits to select an ALU operation.
@@ -23,8 +20,14 @@
 //   The 'Zero' flag is high when 'ALUResult' is '0'. 
 //   The 'ALUControl' signal should determine the function of the ALU 
 //   You need to determine the bitwidth of the ALUControl signal based on the number of 
-//   operations needed to support. 
-////////////////////////////////////////////////////////////////////////////////
+//   operations needed to support.
+//
+// Additional Comments:
+//
+// Last Updated: 10:46 AM 10/28/23 by Sue
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
 
 module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 
