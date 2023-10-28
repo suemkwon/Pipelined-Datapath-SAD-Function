@@ -1,53 +1,35 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 10/26/2023 10:49:33 PM
-// Design Name: 
+//  
 // Module Name: ID_EX_REG
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
 // 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
 // Additional Comments:
+//
+// Last Updated: 10:33 AM 10/28/23 by Sue
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
 
 module ID_EX_REG(clk, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, ALUOp, PCSrc,
-                 Data1, Data2, ShiftAmount, Immediate, pc_plus_4, Bit6, Funct, Bit21, RegRt, RegRd, 
-                 RegWrite_out, RegDst_out, ALUSrc_out, Branch_out, MemWrite_out, MemRead_out, MemToReg_out, ALUOp_out, PCSrc_out,
+                Data1, Data2, ShiftAmount, Immediate, pc_plus_4, Bit6, Funct, Bit21, RegRt, RegRd, 
+                RegWrite_out, RegDst_out, ALUSrc_out, Branch_out, MemWrite_out, MemRead_out, MemToReg_out, ALUOp_out, PCSrc_out,
                 Data1_out, Data2_out, ShiftAmount_out, Immediate_out, pc_plus_4_out, Bit6_out, 
                 Funct_out, Bit21_out, RegRt_out, RegRd_out);
                 
       
-      input clk;
-      input RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg;
-      input [3:0] ALUOp;
-      input PCSrc;
       input [31:0] Data1, Data2, ShiftAmount, Immediate, pc_plus_4;
-      input Bit6;
       input [5:0] Funct;
-      input Bit21;
       input [4:0] RegRt, RegRd;
+      input [3:0] ALUOp;
+      input clk, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, 
+            Bit6, Bit21, PCSrc;
       
-      output reg RegWrite_out, RegDst_out, ALUSrc_out, Branch_out, MemWrite_out, MemRead_out, MemToReg_out;
-      output reg [3:0] ALUOp_out;
-      output reg PCSrc_out;
       output reg [31:0] Data1_out, Data2_out, ShiftAmount_out, Immediate_out, pc_plus_4_out;
-      output reg Bit6_out;
       output reg [5:0] Funct_out;
-      output reg Bit21_out;
       output reg [4:0] RegRt_out, RegRd_out;
-      
-//      reg PRegWrite, PRegDst, PALUSrc, PBranch, PMemWrite, PMemRead, PMemToReg, PzeroExt;   
-//      reg [3:0] PALUOp;
+      output reg [3:0] ALUOp_out;
+      output reg PCSrc_out, Bit6_out, Bit21_out, RegWrite_out, RegDst_out, ALUSrc_out, 
+                 Branch_out, MemWrite_out, MemRead_out, MemToReg_out;
       
       initial begin
         RegWrite_out = 0;
@@ -70,19 +52,8 @@ module ID_EX_REG(clk, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemTo
         RegRd_out = 0;
         PCSrc_out = 0;
        end
-       
-//       always @(posedge clk)    begin
-//        PRegWrite <= RegWrite;
-//        PRegDst <= RegDst;
-//        PALUSrc <= ALUSrc;
-//        PBranch <= Branch;
-//        PMemWrite <= MemWrite;
-//        PMemRead <= MemRead;
-//        PMemToReg <= MemToReg;
-//        PALUOp <= ALUOp;
-//       end 
-       
-       always @(posedge clk)    begin
+  
+       always @(posedge clk) begin
         RegWrite_out <= RegWrite;
         RegDst_out <= RegDst;
         ALUSrc_out <= ALUSrc;
@@ -105,4 +76,3 @@ module ID_EX_REG(clk, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemTo
        end    
                    
 endmodule
-
