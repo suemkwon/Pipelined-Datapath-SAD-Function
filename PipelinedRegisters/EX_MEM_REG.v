@@ -1,21 +1,11 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
 // 
-// Create Date: 10/25/2023 04:15:24 AM
-// Design Name: 
-// Module Name: ID-EX
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
+// Module Name: EX_MEM_REG
 // 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
 // Additional Comments:
+//
+// Last Updated: 10:51 AM 10/28/23 by Sue
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -24,20 +14,15 @@ module EX_MEM_REG(clk, RegWrite, Branch, MemWrite, MemRead, MemToReg, PCSrc, Zer
                     RegWrite_out, Branch_out, MemWrite_out, MemRead_out, MemToReg_out, PCSrc_out, Zero_out, 
                     ALUResult_out, WriteMemData_out, pc_plus_4_out, WriteReg_out);
                     
-        input clk;
-        input RegWrite, Branch, MemWrite, MemRead, MemToReg, PCSrc;
-        input Zero;
         input [31:0] ALUResult;
         input [31:0] WriteMemData, pc_plus_4;
         input [4:0] WriteReg;
+        input clk, RegWrite, Branch, MemWrite, MemRead, MemToReg, PCSrc, Zero;
         
-        output reg RegWrite_out, Branch_out, MemWrite_out, MemRead_out, MemToReg_out, PCSrc_out;
-        output reg Zero_out;
         output reg [31:0] ALUResult_out;
         output reg [31:0] WriteMemData_out, pc_plus_4_out;
         output reg [4:0] WriteReg_out;
-        
-//        reg PRegWrite, PBranch, PMemWrite, PMemRead, PMemToReg;
+        output reg RegWrite_out, Branch_out, MemWrite_out, MemRead_out, MemToReg_out, PCSrc_out, Zero_out;
         
         initial begin
             RegWrite_out = 0;
@@ -53,15 +38,7 @@ module EX_MEM_REG(clk, RegWrite, Branch, MemWrite, MemRead, MemToReg, PCSrc, Zer
             PCSrc_out = 0;
         end
         
-//        always @(posedge clk)   begin
-//        PRegWrite <= RegWrite;
-//        PBranch <= Branch;
-//        PMemWrite <= MemWrite;
-//        PMemRead <= MemRead;
-//        PMemToReg <= MemToReg;   
-//        end
-        
-        always @(posedge clk)   begin
+        always @(posedge clk) begin
             pc_plus_4_out <= pc_plus_4;
             Zero_out <= Zero;
             ALUResult_out <= ALUResult;
