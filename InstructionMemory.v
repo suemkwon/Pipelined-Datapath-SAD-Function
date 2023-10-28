@@ -1,10 +1,7 @@
 `timescale 1ns / 1ps
-
-////////////////////////////////////////////////////////////////////////////////
-// ECE369A - Computer Architecture
-// Laboratory  1
-// Module - InstructionMemory.v
-// Description - 32-Bit wide instruction memory.
+//////////////////////////////////////////////////////////////////////////////////
+//  
+// Module Name: InstructionMemory
 //
 // INPUT:-
 // Address: 32-Bit address input port.
@@ -32,9 +29,13 @@
 //
 // be careful with the least two significant bits of the 32bit address. those help us index 
 // into one of the 4 bytes in a word. therefore you will need to use bit [8-2] of the input address. 
+// 
+// Additional Comments:
+//
+// Last Updated: 10:16 AM 10/28/23 by George
+// 
+//////////////////////////////////////////////////////////////////////////////////
 
-
-////////////////////////////////////////////////////////////////////////////////
 
 module InstructionMemory(PCResult, Instruction);
 
