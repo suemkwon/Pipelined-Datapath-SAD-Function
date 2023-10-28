@@ -1,10 +1,7 @@
 `timescale 1ns / 1ps
-
-////////////////////////////////////////////////////////////////////////////////
-// ECE369A - Computer Architecture
-// Laboratory 1
-// Module - pc_register.v
-// Description - 32-Bit program counter (PC) register.
+//////////////////////////////////////////////////////////////////////////////////
+//  
+// Module Name: ProgramCounter
 //
 // INPUTS:-
 // Address: 32-Bit address input port.
@@ -22,7 +19,13 @@
 // You need to enable global reset of your datapath to point 
 // to the first instruction in your instruction memory (i.e., the first address 
 // location, 0x00000000H).
-////////////////////////////////////////////////////////////////////////////////
+// 
+// Additional Comments:
+//
+// Last Updated: 10:14 AM 10/28/23 by Sue
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
 
 module ProgramCounter(Address, PCResult, rst, clk);
 
