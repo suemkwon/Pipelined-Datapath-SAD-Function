@@ -7,7 +7,7 @@
 // 
 // Additional Comments:
 //
-// Last Updated: 11:00 AM 10/28/23
+// Last Updated: 11:48 AM 10/28/23
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -28,8 +28,8 @@ module TopLevel(clk, rst, WriteData, ProgramCounter);
         wire [15:0] immediate;
         wire [5:0] funct, opcode, functEX;  
         wire [4:0] readRegRs, readRegRt, regRd, writeRegEX, writeRegMEM, writeRegWB, 
-            destinationRegEX, regRtEX;
-        wire [3:0] aluControl, ALUOpID, ALUOpEX;
+            destinationRegEX, regRtEX, aluControl, ALUOpID;
+        wire [3:0] ALUOpEX;
         wire pcSrcID, regWriteID, regDstID, aluSrcID, branchID, memWriteID, memReadID, memToRegID, 
             zeroExtID, pcSrcEX, regWriteEX, regDstEX, aluSrcEX, branchEX, memWriteEX, memReadEX, 
             memToRegEX, zeroExtEX, regWriteMEM, memToRegMEM, memWriteMEM, memReadMEM, branchMEM, 
