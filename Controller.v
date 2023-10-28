@@ -5,7 +5,7 @@
 // 
 // Additional Comments:
 //
-// Last Updated: 10:20 AM 10/28/23 by Sue
+// Last Updated: 11:48 AM 10/28/23 by Sue
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -14,7 +14,7 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
 
     input [5:0] opcode;
     output reg PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt;
-    output reg [3:0] ALUOp;
+    output reg [4:0] ALUOp;
     
     initial begin
        PCSrc <= 0;
@@ -31,7 +31,8 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
     always @(opcode)    begin
         
     case(opcode)
-        6'b000000:  begin   
+    
+    6'b000000:  begin   // R-format
         PCSrc <= 0;
         RegWrite <= 1;
         RegDst <= 1;
@@ -41,21 +42,9 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         MemRead <= 0;
         MemToReg <= 1; 
         zeroExt <= 0;
-        ALUOp <= 4'b0000;
-        end
-    6'b001001: begin   
-        PCSrc <= 0;
-        RegWrite <= 1;
-        RegDst <= 0;
-        ALUSrc <= 1;
-        Branch <= 0;
-        MemWrite <= 0;
-        MemRead <= 0;
-        MemToReg <= 1;
-        zeroExt <= 0;
-        ALUOp <= 4'b0001;
-        end             
-    6'b001000: begin   
+        ALUOp <= 5'b00000;
+        end         
+    6'b001000: begin   // addi
         PCSrc <= 0;
         RegWrite <= 1;
         RegDst <= 0;
@@ -65,9 +54,9 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         MemRead <= 0;
         MemToReg <= 1; 
         zeroExt <= 0;
-        ALUOp <= 4'b0001;
+        ALUOp <= 5'b00001;
         end
-    6'b011100: begin  
+    6'b011100: begin  // mul
         PCSrc <= 0;
         RegWrite <= 1;
         RegDst <= 1;
@@ -77,9 +66,9 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         MemRead <= 0;
         MemToReg <= 1; 
         zeroExt <= 0;
-        ALUOp <= 4'b0010;    
+        ALUOp <= 5'b00011;    
         end
-    6'b001100: begin 
+    6'b001100: begin // andi
         PCSrc <= 0;
         RegWrite <= 1;
         RegDst <= 0;
@@ -89,9 +78,9 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         MemRead <= 0;
         MemToReg <= 1; 
         zeroExt <= 1;
-        ALUOp <= 4'b0011;    
+        ALUOp <= 5'b10100;    
         end
-    6'b001101: begin  
+    6'b001101: begin  // ori
        PCSrc <= 0;
        RegWrite <= 1;
        RegDst <= 0;
@@ -101,9 +90,9 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
        MemRead <= 0;
        MemToReg <= 1;
        zeroExt <= 1;
-       ALUOp <= 4'b0100;    
+       ALUOp <= 5'b10101;    
        end 
-    6'b001110: begin  
+    6'b001110: begin  // xori
        PCSrc <= 0;
        RegWrite <= 1;
        RegDst <= 0;
@@ -113,21 +102,9 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
        MemRead <= 0;
        MemToReg <= 1; 
        zeroExt <= 1;
-       ALUOp <= 4'b0101;    
-       end
-    6'b011111: begin   
-        PCSrc <= 0;
-        RegWrite <= 1;
-        RegDst <= 1;
-        ALUSrc <= 0;
-        Branch <= 0;
-        MemWrite <= 0;
-        MemRead <= 0;
-        MemToReg <= 1; 
-        zeroExt <= 0;
-        ALUOp <= 4'b0011;    
-        end   
-    6'b001010:  begin   
+       ALUOp <= 5'b11001;    
+       end  
+    6'b001010:  begin  // slti 
         PCSrc <= 0;
         RegWrite <= 1;
         RegDst <= 0;
@@ -137,20 +114,8 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         MemRead <= 0;
         MemToReg <= 1;
         zeroExt <= 0;
-        ALUOp <= 4'b0110;    
+        ALUOp <= 5'b11101;    
         end   
-    6'b001011:  begin  
-        PCSrc <= 0;
-        RegWrite <= 1;
-        RegDst <= 0;
-        ALUSrc <= 1;
-        Branch <= 0;
-        MemWrite <= 0;
-        MemRead <= 0;
-        MemToReg <= 1; 
-        zeroExt <= 0;
-        ALUOp <= 4'b0110;    
-        end
         endcase    
     end
 
