@@ -1,10 +1,7 @@
 `timescale 1ns / 1ps
-
-////////////////////////////////////////////////////////////////////////////////
-// ECE369 - Computer Architecture
-// 
-// Module - data_memory.v
-// Description - 32-Bit wide data memory.
+//////////////////////////////////////////////////////////////////////////////////
+//  
+// Module Name: DataMemory
 //
 // INPUTS:-
 // Address: 32-Bit address input port.
@@ -33,24 +30,29 @@
 // however , address port for the data memory is 32 bits. from those 32 bits, least significant 2 
 // bits help us index to one of the 4 bytes within a single word. therefore we only need bits [9-2] 
 // of the "Address" input to index any of the 256 words. 
-////////////////////////////////////////////////////////////////////////////////
+// 
+// Additional Comments:
+//
+// Last Updated 10:52 AM 10/28/23 by Sue
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
 
 module DataMemory(clk, Address, WriteData, MemWrite, MemRead, ReadData); 
+
+    // Input Address, Data that needs to be written into the address 
+    input [31:0] Address, WriteData;     
+    input clk, MemWrite, MemRead; 		
+    	  
+    // Contents of memory location at Address
+    output reg[31:0] ReadData;  
     
-    input [31:0] Address; 	    // Input Address 
-    input [31:0] WriteData;     // Data that needs to be written into the address 
-    input clk;
-    input MemWrite; 		    // Control signal for memory write 
-    input MemRead; 			    // Control signal for memory read 
-
-    output reg[31:0] ReadData;  // Contents of memory location at Address
-
-    /* Please fill in the implementation here */
-
-    reg [31:0] memory [0:1023];                // an array of 1024 (1K)
+    // an array of 1024 (1K)
+    reg [31:0] memory [0:1023];                
 
     // The 'WriteData' value is written into the address corresponding
     // to Address[11:2] in the positive clock edge if 'MemWrite' signal is 1
+    
     always @(posedge clk) begin
         if (MemWrite == 1'b1) begin
             memory[Address[11:2]] <= WriteData;
@@ -59,6 +61,7 @@ module DataMemory(clk, Address, WriteData, MemWrite, MemRead, ReadData);
 
     // 'ReadData' is the value of memory location Address[11:2] if 'MemRead'
     // is 1, otherwise, it is 0x00000000. The reading of memory is not clocked.
+    
     always @(*) begin
         if (MemRead == 1'b1) begin
                 ReadData <= memory[Address[11:2]];
