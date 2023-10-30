@@ -41,9 +41,9 @@ module TopLevel(clk, rst, out7, en_out);
             branch, zero, PCSrc;    
 
         // PCAdder(PCResult, PCAddResult, clk, rst)
-        PCAdder a(ProgramCounter, pcPlus4, clk, rst);
+        PCAdder a(ProgramCounter, pcPlus4, ClkOut, rst);
         // ProgramCounter(Address, PCResult, rst, clk)
-        ProgramCounter b(pcPlus4, ProgramCounter, rst, clk);
+        ProgramCounter b(pcPlus4, ProgramCounter, rst, ClkOut);
         // InstructionMemory(PCResult, Instruction)
         InstructionMemory c(ProgramCounter, instruction);
         // IF_ID_REG(instructionIn, PCPlus4In, instructionOut, PCPlus4Out, clk)
