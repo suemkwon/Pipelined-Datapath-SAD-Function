@@ -7,7 +7,7 @@
 // 
 // Additional Comments:
 //
-// Last Updated: 11:48 AM 10/28/23
+// Last Updated: 1:18 AM 10/30/23
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -18,8 +18,9 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
     output wire [31:0] WriteData, ProgramCounter;
     output [6:0] out7;//for displaying
     output [7:0] en_out;//for displaying 
-     
+    
 // Instruction Fetch 
+
         wire [31:0] instrAaddress, instruction; 
         // Pipeline Register Outputs
         wire [31:0] instructionOut, pcresultPlus4ID, pcresultPlus4EX, pcresultPlus4MEM, 
@@ -35,11 +36,10 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
         wire pcSrcID, regWriteID, regDstID, aluSrcID, branchID, memWriteID, memReadID, memToRegID, 
             zeroExtID, pcSrcEX, regWriteEX, regDstEX, aluSrcEX, branchEX, memWriteEX, memReadEX, 
             memToRegEX, zeroExtEX, regWriteMEM, memToRegMEM, memWriteMEM, memReadMEM, branchMEM, 
-            pcSrcMEM, memToRegWB, zeroEX, zeroMEM, bit6_EX, bit21EX, aluSrc2, regWriteWB;    
-    
+            pcSrcMEM, memToRegWB, zeroEX, zeroMEM, bit6_EX, bit21EX, aluSrc2, regWriteWB, 
+            branch, zero, PCSrc;    
      //display
      wire [31:0] numA, numB;
-     
         // PCAdder(PCResult, PCAddResult, clk, rst)
         PCAdder a(ProgramCounter, pcPlus4, clk, rst);
         // ProgramCounter(Address, PCResult, rst, clk)
@@ -114,26 +114,26 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
     
 // Memory 
     
+        // Branch(branch, zero, PCSrc)
+        Branch r(branch, zero, PCSrc);
         // DataMemory(clk, Address, WriteData, MemWrite, MemRead, ReadData)
-        DataMemory r(clk, aluResultMEM, readData2MEM, memWriteMEM, memReadMEM, readMemDataMEM);
+        DataMemory s(clk, aluResultMEM, readData2MEM, memWriteMEM, memReadMEM, readMemDataMEM);
         // MEM_WB_REG(clk, RegWrite, MemToReg, MemData, ALUResult, WriteReg, 
                   // RegWrite_out, MemToReg_out, MemData_out, ALUResult_out, WriteReg_out)
-        MEM_WB_REG s(clk, regWriteMEM, memToRegMEM, readMemDataMEM, aluResultMEM, writeRegMEM, 
+        MEM_WB_REG t(clk, regWriteMEM, memToRegMEM, readMemDataMEM, aluResultMEM, writeRegMEM, 
                  regWriteWB, memToRegWB, readMemDataWB, aluResultWB, writeRegWB);
     
 // Write Back
 
         // Mux32Bit2To1(out, inA, inB, sel)
-        Mux32Bit2To1 t(WriteData, readMemDataWB, aluResultWB, memToRegWB);
-        
+        Mux32Bit2To1 u(WriteData, readMemDataWB, aluResultWB, memToRegWB);
 //clock div
 
         //ClkDiv(Clk, Rst, ClkOut)
-        ClkDiv u(Clk, 0, ClkOut);
+        ClkDiv v(Clk, 0, ClkOut);
         
         
 //Two 4 digit display        
         // Two4DigitDisplay(Clk, NumberA, NumberB, out7, en_out)
-    Two4DigitDisplay v(Clk, numA[15:0], numB[15:0], out7, en_out);
-
+    Two4DigitDisplay w(Clk, numA[15:0], numB[15:0], out7, en_out);
 endmodule
