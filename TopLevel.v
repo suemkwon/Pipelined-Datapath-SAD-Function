@@ -12,11 +12,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module TopLevel(clk, rst, WriteData, ProgramCounter);
+module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
     
     input clk, rst;
     output wire [31:0] WriteData, ProgramCounter;
     
+    output [6:0] out7;//for displaying
+    output [7:0] en_out;//for displaying
+    wire ClkOut;
 // Instruction Fetch 
 
         wire [31:0] instrAaddress, instruction; 
@@ -124,5 +127,11 @@ module TopLevel(clk, rst, WriteData, ProgramCounter);
 
         // Mux32Bit2To1(out, inA, inB, sel)
         Mux32Bit2To1 u(WriteData, readMemDataWB, aluResultWB, memToRegWB);
+        
+        // ClkDiv(Clk, Rst, ClkOut)
+        ClkDiv v(clk, 1'b0, ClkOut);
+        
+        // Two4DigitDisplay(Clk, NumberA, NumberB, out7, en_out)
+        Two4DigitDisplay w(clk, WriteData[15:0], ProgramCounter[15:0], out7, en_out);
 
 endmodule
