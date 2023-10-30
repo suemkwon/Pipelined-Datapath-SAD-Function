@@ -24,7 +24,7 @@
 //
 // Additional Comments:
 //
-// Last Updated: 11:30 AM 10/28/23 by Sue
+// Last Updated: 1:36 AM 10/30/23
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -83,9 +83,9 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 					Zero = 1;
 			end
 
-        // data operations
+        	// data operations
         
-        	// lw (Load word)
+        		// lw (Load word)
 			// ALUControl = 4
 			5'b00100: begin
 				ALUResult = (A + B);
@@ -93,7 +93,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 					Zero = 1;
 			end
         
-           	// sw (Store word)
+           		// sw (Store word)
 			// ALUControl = 5
 			5'b00101: begin
 				ALUResult = (A + B);
@@ -109,7 +109,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 					Zero = 1;
 			end     
         
-            // lh (Load half)
+            		// lh (Load half)
 			// ALUControl = 7
 			5'b00111: begin
 				ALUResult = (A + B);
@@ -117,7 +117,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 					Zero = 1;
 			end
         
-            // lb (Load byte)
+            		// lb (Load byte)
 			// ALUControl = 8
 			5'b01000: begin
 				ALUResult = (A + B);
@@ -125,7 +125,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 					Zero = 1;
 			end
         
-            // sh (Store half)
+            		// sh (Store half)
 			// ALUControl = 9
 			5'b01001: begin
 				ALUResult = (A + B);
@@ -133,9 +133,9 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 					Zero = 1;
 			end
         
-        // branch operations 
+        	// branch operations 
         
-            // bgez (branch if greater than or equal to zero)
+            		// bgez (branch if greater than or equal to zero)
 			// ALUControl = 10
 			5'b01010: begin
 				ALUResult = (A >= 0);
@@ -186,25 +186,19 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 			// j (jump)
 			// ALUControl = 16
 			5'b10000: begin
-				ALUResult = (A == B);
-				if (ALUResult == 0)
-					Zero = 1;
+				Zero = 1;
 			end
 			
 			// jr (jump register)
 			// ALUControl = 17
 			5'b10001: begin
-				ALUResult = (A == B);
-				if (ALUResult == 0)
-					Zero = 1;
+				Zero = 1;
 			end
 			
 			// jal (jump and link)
 			// ALUControl = 18
 			5'b10010: begin
-				ALUResult = (A + 4);
-				if (ALUResult == 0)
-					Zero = 1;
+				Zero = 1;
 			end   
 			
 		// logical operations
@@ -225,82 +219,87 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk);
 					Zero = 1;
 			end
 
-            // or (Or)
+            		// or (Or)
 			// ALUControl = 21
-            5'b10101: begin
-                ALUResult = (A | B);
-                if (ALUResult == 0)
-                    Zero = 1;
-             end
+            		5'b10101: begin
+                		ALUResult = (A | B);
+                		if (ALUResult == 0)
+                    			Zero = 1;
+             		end
                 
-            // nor (Nor or)
+            		// nor (Nor or)
 			// ALUControl = 22
-            5'b10110: begin
-                ALUResult = ~(A | B);
-                if (ALUResult == 0)
-                    Zero = 1;
-            end  
+            		5'b10110: begin
+                		ALUResult = ~(A | B);
+                		if (ALUResult == 0)
+                   			Zero = 1;
+            		end  
             
-            // xor (Exclusive or)
+            		// xor (Exclusive or)
 			// ALUControl = 23
-            5'b10111: begin
-                ALUResult = (A ^ B);
-                if (ALUResult == 0)
-                    Zero = 1;
-            end  
+            		5'b10111: begin
+                		ALUResult = (A ^ B);
+                		if (ALUResult == 0)
+                    			Zero = 1;
+            		end  
             
-            // ori (Or immediate)
+            		// ori (Or immediate)
 			// ALUControl = 24
-            5'b11000: begin
-                ALUResult = (A | B);
-                if (ALUResult == 0)
-                    Zero = 1;
-            end 
+            		5'b11000: begin
+                		ALUResult = (A | B);
+                		if (ALUResult == 0)
+                    			Zero = 1;
+            		end 
             
-            // xori (Exclusive or Immediate)
+            		// xori (Exclusive or Immediate)
 			// ALUControl = 25
-            5'b11001: begin
-                ALUResult = (A ^ B);
-                if (ALUResult == 0)
-                    Zero = 1;
-            end
+            		5'b11001: begin
+                		ALUResult = (A ^ B);
+                		if (ALUResult == 0)
+                    			Zero = 1;
+            		end
             
-            // sll (Shift left logical)
+            		// sll (Shift left logical)
 			// ALUControl = 26
-            5'b11010: begin
-                ALUResult = (A << B);
-                if (ALUResult == 0)
-                    Zero = 1;
-            end
+            		5'b11010: begin
+                		ALUResult = (A << B);
+                		if (ALUResult == 0)
+                    			Zero = 1;
+            		end
             
-            // srl (Shift right logical)
+            		// srl (Shift right logical)
 			// ALUControl = 27
-            5'b11011: begin
-                ALUResult = (A >> B);
-                if (ALUResult == 0)
-                    Zero = 1;
-            end
+            		5'b11011: begin
+                		ALUResult = (A >> B);
+                		if (ALUResult == 0)
+                    			Zero = 1;
+            		end
 
 			// slt (Set on less than)
 			// ALUControl = 28
 			5'b11100: begin
 			     if (A < B) begin
-			         ALUResult = 32'h00000001;
+			         ALUResult = 1;
 			         Zero = 0;
 			     end
 			     else begin
-			         ALUResult = 32'h00000000;
+			         ALUResult = 0;
 			         Zero = 1;
 			     end
-		    end
+		    	end
 		    
-            // slti (Set on less than immediate)
+            		// slti (Set on less than immediate)
 			// ALUControl = 29
 			5'b11101: begin
-			    ALUResult = (A ^ B);
-                if (ALUResult == 0)
-                    Zero = 1;
-		   end
+			    if (A < B) begin
+			         ALUResult = 1;
+			         Zero = 0;
+			     end
+			     else begin
+			         ALUResult = 0;
+			         Zero = 1;
+			     end
+		   	end
 		endcase
 	end
 
