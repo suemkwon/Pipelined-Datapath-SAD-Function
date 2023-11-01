@@ -5,15 +5,15 @@
 // 
 // Additional Comments:
 //
-// Last Updated: 11:48 AM 10/28/23 by Sue
+// Last Updated: 3:11 AM 11/1/23 
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt, ALUOp);
+module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt, JumpInstCont, ALUOp);
 
     input [5:0] opcode;
-    output reg PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt;
+    output reg PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt, JumpInstCont;
     output reg [4:0] ALUOp;
     
     initial begin
@@ -22,10 +22,11 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
        RegDst <= 0;
        ALUSrc <= 0;
        Branch <= 0; 
-       MemWrite<= 0; 
-       MemRead<= 0; 
-       MemToReg<= 0; 
-       zeroExt<= 0;
+       MemWrite <= 0; 
+       MemRead <= 0; 
+       MemToReg <= 0; 
+       zeroExt <= 0;
+       JumpInstCont <= 0;
      end   
 
     always @(opcode)    begin
@@ -116,7 +117,46 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         zeroExt <= 0;
         ALUOp <= 5'b11101;    
         end   
-        endcase    
+    6'b000000:  begin  // jr
+        PCSrc <= 0;
+        RegWrite <= 0;
+        RegDst <= 0;
+        ALUSrc <= 0;
+        Branch <= 0;
+        MemWrite <= 0;
+        MemRead <= 0;
+        MemToReg <= 0;
+        zeroExt <= 0;
+        ALUOp <= 5'b10001; 
+        JumpInstCont <= 1;   
+        end   
+    6'b000010:  begin  // j
+        PCSrc <= 0;
+        RegWrite <= 0;
+        RegDst <= 0;
+        ALUSrc <= 0;
+        Branch <= 0;
+        MemWrite <= 0;
+        MemRead <= 0;
+        MemToReg <= 0;
+        zeroExt <= 0;
+        ALUOp <= 5'b10000;  
+        JumpInstCont <= 2;  
+        end   
+    6'b000011:  begin  // jal 
+        PCSrc <= 0;
+        RegWrite <= 0;
+        RegDst <= 0;
+        ALUSrc <= 0;
+        Branch <= 0;
+        MemWrite <= 0;
+        MemRead <= 0;
+        MemToReg <= 0;
+        zeroExt <= 0;
+        ALUOp <= 5'b10010;  
+        JumpInstCont <= 2;  
+        end   
+     endcase    
     end
 
 endmodule
