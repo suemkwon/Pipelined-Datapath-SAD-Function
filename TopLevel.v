@@ -7,19 +7,20 @@
 // 
 // Additional Comments:
 //
-// Last Updated: 1:18 AM 10/30/23
+// Last Updated: 10/31/23
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
+module TopLevel(clk, rst, WriteData, ProgramCounter);
     
     input clk, rst;
     output wire [31:0] WriteData, ProgramCounter;
     
-    output [6:0] out7;//for displaying
-    output [7:0] en_out;//for displaying
-    wire ClkOut;
+    //output [6:0] out7;//for displaying
+    //output [7:0] en_out;//for displaying
+    //wire ClkOut;
+    
 // Instruction Fetch 
 
         wire [31:0] instrAaddress, instruction; 
@@ -28,7 +29,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
             pcresultPlus4Out, pcresultPlus4Out2, A, B, signExtendedShift, datatowrite, addressAdded,
             addressAddedOut, aluResultEX, aluResultMEM, aluResultWB, immediateID, immediateEX, 
             shiftAmountID, shiftAmountEX, readData1ID, readData2ID, pcPlus4, nextPc, readData1EX, 
-            readData2EX,readData2MEM, readMemDataMEM, readMemDataWB, pcresult;
+            readData2EX, readMemDataMEM, readMemDataWB, pcresult, readData2MEM, muxOut, addr;
         wire [15:0] immediate;
         wire [5:0] funct, opcode, functEX;  
         wire [4:0] readRegRs, readRegRt, regRd, writeRegEX, writeRegMEM, writeRegWB, 
@@ -38,12 +39,16 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
             zeroExtID, pcSrcEX, regWriteEX, regDstEX, aluSrcEX, branchEX, memWriteEX, memReadEX, 
             memToRegEX, zeroExtEX, regWriteMEM, memToRegMEM, memWriteMEM, memReadMEM, branchMEM, 
             pcSrcMEM, memToRegWB, zeroEX, zeroMEM, bit6_EX, bit21EX, aluSrc2, regWriteWB, 
-            branch, zero, PCSrc;    
+            branch, zero, PCSrc, JumpInstC;    
      
+        // Mux32Bit2To1(out, inA, inB, sel)
+        Mux32Bit2To1 v(muxOut, pcPlus4, pcresultPlus4MEM, pcSrcEX);
+        // Mux32Bit2To1(out, inA, inB, sel)
+        Mux32Bit2To1 w(addr, shiftAmountID, muxOut, JumpInstC);
         // PCAdder(PCResult, PCAddResult, clk, rst)
         PCAdder a(ProgramCounter, pcPlus4, clk, rst);
         // ProgramCounter(Address, PCResult, rst, clk)
-        ProgramCounter b(pcPlus4, ProgramCounter, rst, clk);
+        ProgramCounter b(addr, ProgramCounter, rst, clk);
         // InstructionMemory(PCResult, Instruction)
         InstructionMemory c(ProgramCounter, instruction);
         // IF_ID_REG(instructionIn, PCPlus4In, instructionOut, PCPlus4Out, clk)
@@ -59,9 +64,9 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
         assign funct = instructionOut[5:0];
     
         // Controller(opCode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, 
-                // MemWrite, MemRead, MemToReg, zeroExt, ALUOp)
+                // MemWrite, MemRead, MemToReg, zeroExt, JumpInstCont, ALUOp)
         Controller e(opcode, pcSrcID, regWriteID, regDstID, aluSrcID, branchID, 
-                 memWriteID, memReadID, memToRegID, zeroExtID, ALUOpID);
+                 memWriteID, memReadID, memToRegID, zeroExtID, JumpInstC, ALUOpID);
         // SignExtension(in, out, zeroExt)
         SignExtension f(immediate, immediateID, zeroExtID);
         // SignExtend(in, out)
@@ -94,7 +99,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
         // ALUControl(funct, ALUOp, rBit6, rBit21, ALUControl, ALUSrc2)
         ALUControl l(functEX, ALUOpEX, bit6EX, bit21EX, aluControl, aluSrc2);
         // Mux32Bit2To1(out, inA, inB, sel)
-        Mux32Bit2To1 m(A, readData1EX, shiftAmountEX, aluSrc2);
+        // Mux32Bit2To1 m(A, readData1EX, shiftAmountEX, aluSrcEX);
         // ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk)
         ALU32Bit n(aluControl, A, B, aluResultEX, zeroEX, clk); 
         // ShiftLeft(in, out)
@@ -115,7 +120,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
 // Memory 
     
         // Branch(branch, zero, PCSrc)
-        Branch r(branch, zero, PCSrc);
+        Branch r(branchMEM, zeroMEM, pcSrcEX);
         // DataMemory(clk, Address, WriteData, MemWrite, MemRead, ReadData)
         DataMemory s(clk, aluResultMEM, readData2MEM, memWriteMEM, memReadMEM, readMemDataMEM);
         // MEM_WB_REG(clk, RegWrite, MemToReg, MemData, ALUResult, WriteReg, 
@@ -129,9 +134,9 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, out7, en_out);
         Mux32Bit2To1 u(WriteData, readMemDataWB, aluResultWB, memToRegWB);
         
         // ClkDiv(Clk, Rst, ClkOut)
-        ClkDiv v(clk, 1'b0, ClkOut);
+        // ClkDiv v(clk, 1'b0, ClkOut);
         
         // Two4DigitDisplay(Clk, NumberA, NumberB, out7, en_out)
-        Two4DigitDisplay w(clk, WriteData[15:0], ProgramCounter[15:0], out7, en_out);
+        // Two4DigitDisplay w(clk, WriteData[15:0], ProgramCounter[15:0], out7, en_out);
 
 endmodule
