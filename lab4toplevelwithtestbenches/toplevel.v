@@ -7,7 +7,7 @@
 // 
 // Additional Comments:
 //
-// Last Updated: 10/31/23
+// Last Updated: 1:18 AM 10/30/23
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -21,7 +21,8 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
     output wire[5:0] functEX;
     output wire [3:0] ALUOpEX;
     output wire aluSrcID;//test
-    //output [6:0] out7;//for displaying,
+    
+    //output [6:0] out7;//for displaying
     //output [7:0] en_out;//for displaying
     //wire ClkOut;
     
@@ -39,20 +40,21 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
         wire [4:0] readRegRs, readRegRt, regRd, writeRegEX, writeRegMEM, writeRegWB, 
             destinationRegEX, regRtEX, aluControl, ALUOpID;
         wire [3:0] ALUOpEX;
+        wire [1:0] JumpInstC, JInstCOut;
         wire pcSrcID, regWriteID, regDstID, aluSrcID, branchID, memWriteID, memReadID, memToRegID, 
             zeroExtID, pcSrcEX, regWriteEX, regDstEX, aluSrcEX, branchEX, memWriteEX, memReadEX, 
             memToRegEX, zeroExtEX, regWriteMEM, memToRegMEM, memWriteMEM, memReadMEM, branchMEM, 
             pcSrcMEM, memToRegWB, zeroEX, zeroMEM, bit6_EX, bit21EX, aluSrc2, regWriteWB, 
-            branch, zero, PCSrc, JumpInstC;    
+            branch, zero, PCSrc, controlMux;    
      
         // Mux32Bit2To1(out, inA, inB, sel)
-        Mux32Bit2To1 v(addr, pcPlus4, pcresultPlus4MEM, pcSrcEX);
+         Mux32Bit2To1 x(muxOut, pcPlus4, pcresultPlus4MEM, pcSrcEX);
         // Mux32Bit2To1(out, inA, inB, sel)
-        //Mux32Bit2To1 w(addr, shiftAmountID, muxOut, JumpInstC);
+        // Mux32Bit2To1 y(pcPlus4, shiftAmountID, muxOut, JumpInstC);
         // PCAdder(PCResult, PCAddResult, clk, rst)
         PCAdder a(ProgramCounter, pcPlus4, clk, rst);
         // ProgramCounter(Address, PCResult, rst, clk)
-        ProgramCounter b(addr, ProgramCounter, rst, clk);
+        ProgramCounter b(pcPlus4, ProgramCounter, rst, clk);
         // InstructionMemory(PCResult, Instruction)
         InstructionMemory c(ProgramCounter, instruction);
         // IF_ID_REG(instructionIn, PCPlus4In, instructionOut, PCPlus4Out, clk)
@@ -71,6 +73,8 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
                 // MemWrite, MemRead, MemToReg, zeroExt, JumpInstCont, ALUOp)
         Controller e(opcode, pcSrcID, regWriteID, regDstID, aluSrcID, branchID, 
                  memWriteID, memReadID, memToRegID, zeroExtID, JumpInstC, ALUOpID);
+        // ControllerMux(JumpInstCont, controlMux, JumpInstContOut)
+        //ControllerMux z(JumpInstC, controlMux, JInstCOut);
         // SignExtension(in, out, zeroExt)
         SignExtension f(immediate, immediateID, zeroExtID);
         // SignExtend(in, out)
@@ -103,18 +107,18 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
         // ALUControl(funct, ALUOp, rBit6, rBit21, ALUControl, ALUSrc2)
         ALUControl l(functEX, ALUOpEX, bit6EX, bit21EX, aluControl, aluSrc2);
         // Mux32Bit2To1(out, inA, inB, sel)
-        // Mux32Bit2To1 m(A, readData1EX, shiftAmountEX, aluSrcEX);
+        Mux32Bit2To1 m(A, readData1EX, shiftAmountEX, aluSrcEX);
         // ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk)
-        ALU32Bit n(aluControl, readData1EX, B, aluResultEX, zeroEX, clk); 
+        ALU32Bit n(aluControl, A, B, aluResultEX, zeroEX, clk); 
         // ShiftLeft(in, out)
         ShiftLeft o(immediateEX, signExtendedShift);
         // Adder(pc_plus4, shiftleft, out)
         Adder p(pcresultPlus4ID, signExtendedShift, pcresultPlus4EX);
         // EX_MEM_REG(clk, RegWrite, Branch, MemWrite, MemRead, 
                  // MemToReg, PCSrc, Zero, ALUResult, WriteMemData, 
-                 // pc_plus_4, WriteReg, RegWrite_out, Branch_out, 
-                 // MemWrite_out, MemRead_out, MemToReg_out, PCSrc_out, Zero_out, 
-                 // ALUResult_out, WriteMemData_out, pc_plus_4_out, WriteReg_out)
+                 // pcPlus4, WriteReg, RegWriteOut, BranchOut, 
+                 // MemWriteOut, MemReadOut, MemToRegOut, PCSrcOut, ZeroOut, 
+                 // ALUResultOut, WriteMemDataOut, pcPlus4Out, WriteRegOut)
         EX_MEM_REG q(clk, regWriteEX, branchEX, memWriteEX, memReadEX, 
                  memToRegEX, pcSrcEX, zeroEX, aluResultEX, readData2EX, 
                  pcresultPlus4EX, writeRegEX, regWriteMEM, branchMEM, 
@@ -128,7 +132,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
         // DataMemory(clk, Address, WriteData, MemWrite, MemRead, ReadData)
         DataMemory s(clk, aluResultMEM, readData2MEM, memWriteMEM, memReadMEM, readMemDataMEM);
         // MEM_WB_REG(clk, RegWrite, MemToReg, MemData, ALUResult, WriteReg, 
-                  // RegWrite_out, MemToReg_out, MemData_out, ALUResult_out, WriteReg_out)
+                  // RegWriteOut, MemToRegOut, MemDataOut, ALUResultOut, WriteRegOut)
         MEM_WB_REG t(clk, regWriteMEM, memToRegMEM, readMemDataMEM, aluResultMEM, writeRegMEM, 
                  regWriteWB, memToRegWB, readMemDataWB, aluResultWB, writeRegWB);
     
