@@ -59,21 +59,19 @@ module RegisterFile(clk, ReadRegister1, ReadRegister2, ReadData1, ReadData2, Wri
     
     initial begin
         for (i = 0; i < 32; i=i+1) begin
-            Reg[i] = 0;
+            Reg[i] = i;
         end
      end             	
 	
-	always @(clk or WriteData or WriteRegister or RegWrite) begin
-	   if(clk && RegWrite) begin
+	always @(posedge clk) begin
+	   if(RegWrite) begin
 	       Reg[WriteRegister] <= WriteData;
 	   end
 	end
 	
-	always @(clk or ReadRegister1 or ReadRegister2 or WriteRegister) begin
-	   if(~clk) begin
-	   	   ReadData1 <= Reg[ReadRegister1];
-           ReadData2 <= Reg[ReadRegister2];    
-	   end
+	always @(*) begin
+	   ReadData1 <= Reg[ReadRegister1];
+       ReadData2 <= Reg[ReadRegister2];    
 	end             
 
 endmodule
