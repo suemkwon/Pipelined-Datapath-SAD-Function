@@ -14,9 +14,13 @@ module TopLevel_tb();
 
     reg clk, rst;
     wire [31:0] WriteData, ProgramCounter;
-    wire [31:0] aluResultEX,pcPlus4,pcresultPlus4EX,readData1ID,readData2ID;
-    wire [4:0] ALUOpID;
-    wire aluSrcID;
+    wire [31:0] aluResultEX,pcPlus4,pcresultPlus4EX,readData1ID,readData2ID,instructionOut, instruction;
+    wire [4:0] ALUOpID,readRegRt,aluControl;
+    wire [5:0] functEX;
+    wire [31:0] B;
+    wire[31:0]aluResultWB, readMemDataWB, readData2EX, immediateEX;
+    wire [3:0] ALUOpEX;
+    wire aluSrcID, aluSrcEX,memToRegWB;
     
     TopLevel tl( 
               .clk(clk),
@@ -28,10 +32,21 @@ module TopLevel_tb();
               .pcresultPlus4EX(pcresultPlus4EX),
               .readData1ID(readData1ID),
               .readData2ID(readData2ID),
+              .instructionOut(instructionOut),
+              .instruction(instruction),
               .ALUOpID(ALUOpID),
+              .readRegRt(readRegRt),
+              .aluControl(aluControl),
               .functEX(functEX),
               .ALUOpEX(ALUOpEX),
-              .aluSrcID(aluSrcID)
+              .B(B),
+              .aluResultWB(aluResultWB),
+              .readMemDataWB(readMemDataWB),
+              .readData2EX(readData2EX),
+              .immediateEX(immediateEX),              
+              .aluSrcEX(aluSrcEX),
+              .aluSrcID(aluSrcID),
+              .memToRegWB(memToRegWB)
               );
          
     initial begin
