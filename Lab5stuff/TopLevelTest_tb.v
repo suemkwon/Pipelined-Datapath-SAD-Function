@@ -13,15 +13,14 @@
 module TopLevel_tb();
 
     reg clk, rst;
-    wire [31:0] WriteData, ProgramCounter;
- 
+    //wire [31:0] WriteData, ProgramCounter;
+
     
     TopLevel tl( 
               .clk(clk),
               .rst(rst)
       //        .WriteData(WriteData),
       //        .ProgramCounter(ProgramCounter)
-      
               );
          
     initial begin
