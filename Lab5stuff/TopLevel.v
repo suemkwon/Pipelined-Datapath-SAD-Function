@@ -12,17 +12,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module TopLevel(clk, rst, out7, en_out);
+module TopLevel(WriteData, ProgramCounter,rst,clk);
     
     input clk, rst;
-     
-    //output wire [31:0] WriteData, ProgramCounter;
-    output [6:0] out7;//for displaying,
-    //wire [6:0] out7;//for displaying,
-    output [7:0] en_out;//for displaying
-    //wire [7:0] en_out;//for displaying
-    //wire ClkOut;
-    wire [31:0] WriteData, ProgramCounter;
+    output wire [31:0] WriteData, ProgramCounter;
     
 // Instruction Fetch 
 
@@ -55,13 +48,13 @@ module TopLevel(clk, rst, out7, en_out);
           Mux27Bit2To1 w(twentySevenOut, signExtendedJumpWB, muxOut,JumpInstWB ,pcResultPlus4wb,aluResultWB);
 
         // PCAdder(PCResult, PCAddResult, clk, rst)
-        PCAdder a(ProgramCounter, pcPlus4, ClkOut, rst);
+        PCAdder a(ProgramCounter, pcPlus4, clk, rst);
         // ProgramCounter(Address, PCResult, rst, clk)
-        ProgramCounter b(twentySevenOut, ProgramCounter, rst, ClkOut);
+        ProgramCounter b(twentySevenOut, ProgramCounter, rst, clk);
         // InstructionMemory(PCResult, Instruction)
         InstructionMemory c(ProgramCounter, instruction);
         // IF_ID_REG(instructionIn, PCPlus4In, instructionOut, PCPlus4Out, clk)
-        IF_ID_REG d(instruction, pcPlus4, instructionOut, pcresultPlus4Out, ClkOut);
+        IF_ID_REG d(instruction, pcPlus4, instructionOut, pcresultPlus4Out, clk);
     
 // Instruction Decode
 
@@ -83,7 +76,7 @@ module TopLevel(clk, rst, out7, en_out);
         SignExtend g(instructionOut[10:6], shiftAmountID);
         // RegisterFile(clk, ReadRegister1, ReadRegister2, ReadData1, ReadData2, WriteRegister, 
                    // WriteData, RegWrite)
-         RegisterFile h(ClkOut, readRegRs, readRegRt, readData1ID, readData2ID, writeRegWB, 
+         RegisterFile h(clk, readRegRs, readRegRt, readData1ID, readData2ID, writeRegWB, 
                    WriteData, regWriteWB); 
         // ID_EX_REG(clk, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, 
                 // MemToReg, ALUOp, PCSrc, Data1, Data2, 
@@ -92,7 +85,7 @@ module TopLevel(clk, rst, out7, en_out);
                 // RegDst_out, ALUSrc_out, Branch_out, MemWrite_out, MemRead_out, MemToReg_out, 
                 // ALUOp_out, PCSrc_out, Data1_out, Data2_out, ShiftAmount_out, Immediate_out, 
                 // pc_plus_4_out, Bit6_out, Funct_out, Bit21_out, RegRt_out, RegRd_out)               
-        ID_EX_REG i(ClkOut, regWriteID, regDstID, aluSrcID, branchID, memWriteID, memReadID, 
+        ID_EX_REG i(clk, regWriteID, regDstID, aluSrcID, branchID, memWriteID, memReadID, 
                 memToRegID, ALUOpID, pcSrcID, readData1ID, readData2ID, 
                 shiftAmountID, immediateID, pcresultPlus4Out, instructionOut[6], 
                 funct, instructionOut[21], readRegRt, regRd, regWriteEX, 
@@ -115,7 +108,7 @@ module TopLevel(clk, rst, out7, en_out);
         // Mux32Bit2To1(out, inA, inB, sel)
         // Mux32Bit2To1 m(A, readData1EX, shiftAmountEX, aluSrcEX);
         // ALU32Bit(ALUControl, A, B, ALUResult, Zero, clk,shiftAmountEX)
-        ALU32Bit n(aluControl, readData1EX, B, aluResultEX, zeroEX, ClkOut,shiftAmountEX); 
+        ALU32Bit n(aluControl, readData1EX, B, aluResultEX, zeroEX, clk,shiftAmountEX); 
         // ShiftLeft(in, out)
         ShiftLeft o(immediateEX, signExtendedShift);
         // Adder(pc_plus4, shiftleft, out)
@@ -125,7 +118,7 @@ module TopLevel(clk, rst, out7, en_out);
                  // pc_plus_4, WriteReg, RegWrite_out, Branch_out, 
                  // MemWrite_out, MemRead_out, MemToReg_out, PCSrc_out, Zero_out, 
                  // ALUResult_out, WriteMemData_out, pc_plus_4_out, WriteReg_out,aluControl)
-        EX_MEM_REG q(ClkOut, regWriteEX, branchEX, memWriteEX, memReadEX, 
+        EX_MEM_REG q(clk, regWriteEX, branchEX, memWriteEX, memReadEX, 
                  memToRegEX, pcSrcEX, zeroEX, aluResultEX, readData2EX, 
                  pcresultPlus4EX, writeRegEX, regWriteMEM, branchMEM, 
                  memWriteMEM, memReadMEM, memToRegMEM, pcSrcMEM, zeroMEM, 
@@ -137,10 +130,10 @@ module TopLevel(clk, rst, out7, en_out);
         // Branch(branch, zero, PCSrc)
         Branch r(branchMEM, zeroMEM, branchOUT);
         // DataMemory(clk, Address, WriteData, MemWrite, MemRead, ReadData,alucontrol)
-        DataMemory s(ClkOut, aluResultMEM, readData2MEM, memWriteMEM, memReadMEM, readMemDataMEM,aluControlOut);
+        DataMemory s(clk, aluResultMEM, readData2MEM, memWriteMEM, memReadMEM, readMemDataMEM,aluControlOut);
         // MEM_WB_REG(clk, RegWrite, MemToReg, MemData, ALUResult, WriteReg, 
                   // RegWrite_out, MemToReg_out, MemData_out, ALUResult_out, WriteReg_out)
-        MEM_WB_REG t(ClkOut, regWriteMEM, memToRegMEM, readMemDataMEM, aluResultMEM, writeRegMEM, 
+        MEM_WB_REG t(clk, regWriteMEM, memToRegMEM, readMemDataMEM, aluResultMEM, writeRegMEM, 
                  regWriteWB, memToRegWB, readMemDataWB, aluResultWB, writeRegWB,pcresultPlus4MemOut,pcResultPlus4wb,
                  JumpInstMEM,JumpInstWB,signExtendedJumpMEM,signExtendedJumpWB);
     
@@ -150,10 +143,6 @@ module TopLevel(clk, rst, out7, en_out);
         //Mux32Bit2To1 u(WriteData,  aluResultWB, readMemDataWB, memToRegWB);
         // mux32Bit3To1(out, inA, inB, inC, sel);
         mux32Bit3To1 u(WriteData, aluResultWB,readMemDataWB, pcResultPlus4wb, memToRegWB);
-        // ClkDiv(Clk, Rst, ClkOut)
-         ClkDiv z(clk, 1'b0, ClkOut);
-        
-        // Two4DigitDisplay(Clk, NumberA, NumberB, out7, en_out)
-         Two4DigitDisplay x(clk, WriteData[15:0], ProgramCounter[15:0], out7, en_out);
+
 
 endmodule
