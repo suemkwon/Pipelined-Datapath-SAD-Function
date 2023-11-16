@@ -1,38 +1,57 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// 
-// Module Name: Hazard
-// 
-// Additional Comments:
-//
-// Last Updated: 11/6/2023
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
-module Hazard(clk, instruction, memReadEX, memReadMEM, PCWrite, RegRtEX, RegRdMEM, WriteIFID, controlMux);
-    input [31:0] instruction;
-    input [4:0] RegRtEX, RegRdMEM;
-    input [1:0] memReadEX, memReadMEM;
+
+      module Hazard(clk, registerRS, registerRT, memReadEX, RegRtEX, PCWrite, WriteIFID, controlMux, memReadMEM, RegRtMEM,regwriteex,regwritemem);
+      
+
+    input [4:0] RegRtEX,RegRtMEM;
+    input memReadEX, memReadMEM,regwriteex,regwritemem;
     input clk;
+    input [4:0] registerRS, registerRT;
+    //instruction[25:21] = RS
+   //assign registerRS = instruction[25:21];
+    //instruction[20:16] = RT
+    //assign registerRT = instruction[20:16];
     
     output reg PCWrite, WriteIFID, controlMux;
+    
+ initial begin 
+ PCWrite = 0;
+ WriteIFID = 0;
+ controlMux = 0;
+ end
  
-  always @ (negedge clk) begin
-    if(memReadEX > 0 && (RegRtEX == instruction[25:21] || RegRtEX == instruction[20:16])) begin
-            PCWrite <= 0;
-            WriteIFID <= 0;
-            controlMux <= 0;
+ 
+  always @ (*) begin
+  
+             PCWrite <= 0;
+             WriteIFID <= 0;
+             controlMux <= 0;
+             
+    if((memReadEX > 0) && ((RegRtEX == registerRS) || (RegRtEX == registerRT))) begin
+            PCWrite <= 1;
+            WriteIFID <= 1;
+            controlMux <= 1;
         end
-    else if(memReadMEM > 0 && (RegRdMEM == instruction[25:21] || RegRdMEM == instruction[20:16])) begin
-              PCWrite <= 0;
-              WriteIFID <= 0;
-              controlMux <= 0;
+        
+    else if((memReadMEM > 0) && ((RegRtMEM == registerRS) || (RegRtMEM == registerRT))) begin
+              PCWrite <= 1;
+              WriteIFID <= 1;
+              controlMux <= 1;
          end
-         else begin
-             PCWrite <= 1;
-             WriteIFID <= 1;
-             controlMux <= 1;
-         end     
+         
+             else if((regwriteex > 0) && ((RegRtMEM == registerRS) || (RegRtMEM == registerRT)) && (registerRS != 0) && (registerRT!=0)) begin
+              PCWrite <= 1;
+              WriteIFID <= 1;
+              controlMux <= 1;
+         end
+      
+             else if((regwritemem > 0) && ((RegRtMEM == registerRS) || (RegRtMEM == registerRT)) && (registerRS != 0) && (registerRT!=0)) begin
+              PCWrite <= 1;
+              WriteIFID <= 1;
+              controlMux <= 1;
+         end
+            
       
     end
 endmodule
