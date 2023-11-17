@@ -955,9 +955,7 @@ vbsme:
     li      $t1, 0              # direction is set to 0
 
     mult    $t0, $s2            # mininum sum starts at maximum possible value 
-    mflo    $t0                 # move from LO
     mult    $t0, $s3            # minimum sum satrts at maximum possible value
-    mflo    $t0                 # move from LO
 	
 
 
