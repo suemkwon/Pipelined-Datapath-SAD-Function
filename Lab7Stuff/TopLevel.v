@@ -176,7 +176,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
                  JumpInstEX,JumpInstMEM,signExtendedJumpEX,signExtendedJumpMEM,flushExMem);
     
     //ForwardingUnit(clk,regRTEX,regRSEX,writeMEM,writeWB,regwriteMEM,regwriteWB,bottomMuxOut,topMuxOut);
-        ForwardingUnit a2(clk,regRtEX,regRsEX,writeRegMEM,writeRegWB,regWriteMEM,regWriteWB,bottomMuxOut,topMuxOut,branchEX);
+        ForwardingUnit a2(clk,regRtEX,regRsEX,writeRegMEM,writeRegWB,regWriteMEM,regWriteWB,bottomMuxOut,topMuxOut,branchEX,memReadEX,memReadMEM);
     
     //module TopMuxBeforeAlu(out, inA, inB, inC, sel );
     TopMuxBeforeAlu a4(readData1EX2,readData1EX, WriteData, aluResultMEM,topMuxOut);
