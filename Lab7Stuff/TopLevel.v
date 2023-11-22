@@ -142,7 +142,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
              //Hazard(clk, registerRS, registerRT, memReadEX, memReadMEM, RegRtEX, RegRdMEM, PCWrite, WriteIFID, controlMux);
               //module Hazard(clk, registerRS, registerRT, memReadEX, RegRtEX, PCWrite, WriteIFID, controlMux,memRead,RTmem);
              Hazard a1(clk,readRegRs,readRegRt,memReadEX,regRtEX,PCWrite,hazardOutIFID, controlMuxControl,memReadMEM,writeRegMEM,regWriteEX,regWriteMEM,
-             JumpInstC,JumpInstEX,JumpInstMEM,JumpInstWB,branchID,branchEX,branchMEM,branchOUT,flushIfId, flushIdEx, flushExMem);
+             JumpInstC,JumpInstEX,JumpInstMEM,JumpInstWB,branchID,branchEX,branchMEM,branchOUT,flushIfId, flushIdEx, flushExMem,memReadID);
              
                
                
@@ -179,10 +179,10 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
         ForwardingUnit a2(clk,regRtEX,regRsEX,writeRegMEM,writeRegWB,regWriteMEM,regWriteWB,bottomMuxOut,topMuxOut,branchEX);
     
     //module TopMuxBeforeAlu(out, inA, inB, inC, sel );
-    TopMuxBeforeAlu a4(readData1EX2,readData1EX,WriteData,aluResultMEM,topMuxOut);
+    TopMuxBeforeAlu a4(readData1EX2,readData1EX, WriteData, aluResultMEM,topMuxOut);
     
     //BottomMuxBeforeALU a5(out, inA, inB, inC, sel );
-    BottomMuxBeforeALU a5(B22, B,aluResultMEM, WriteData, bottomMuxOut);
+    BottomMuxBeforeALU a5(B22, B, WriteData, aluResultMEM, bottomMuxOut);
     //MuxBeforeAlu 
     muxBeforeAlu k(B, immediateEX, readData2EX, aluSrcEX);
     
