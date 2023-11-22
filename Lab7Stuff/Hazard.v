@@ -2,7 +2,7 @@
 
 
       module Hazard(clk, registerRS, registerRT, memReadEX, RegRtEX, PCWrite, WriteIFID, controlMux, memReadMEM, RegRtMEM,regwriteex,regwritemem,
-      JumpInstC,JumpInstEX,JumpInstMEM,JumpInstWB,branchid,branchex,branchmem,branchout,flushifid, flushidex, flushexmem,branchidout);
+      JumpInstC,JumpInstEX,JumpInstMEM,JumpInstWB,branchid,branchex,branchmem,branchout,flushifid, flushidex, flushexmem,memreadid);
       
 input branchid,branchex,branchmem,branchout;
     input [4:0] RegRtEX,RegRtMEM;
@@ -10,13 +10,13 @@ input branchid,branchex,branchmem,branchout;
     input clk;
     input [4:0] registerRS, registerRT;
     input [2:0] JumpInstC,JumpInstEX,JumpInstMEM,JumpInstWB;
+    input memreadid;
     //instruction[25:21] = RS
    //assign registerRS = instruction[25:21];
     //instruction[20:16] = RT
     //assign registerRT = instruction[20:16];
     
     output reg PCWrite, WriteIFID, controlMux, flushifid, flushidex, flushexmem;
-    output reg branchidout;
  initial begin 
  PCWrite = 0;
  WriteIFID = 0;
@@ -24,8 +24,7 @@ input branchid,branchex,branchmem,branchout;
  flushifid = 0;
               flushidex = 0;
               flushexmem = 0;
-              
-              branchidout = 0;
+
               
  end
  
@@ -86,12 +85,25 @@ input branchid,branchex,branchmem,branchout;
               controlMux <= 1;
               end
 
-//else if (branchid == 1)begin
+        else if ((branchid == 1) && ((memReadEX == 1) || (memReadMEM == 1))) begin
+            PCWrite <= 1;
+              WriteIFID <= 1;
+              controlMux <= 1;
+              end
+              
+//              else if ((memreadid > 0) && ((memReadEX > 0)|| (memReadMEM > 0))) begin
 //            PCWrite <= 1;
 //              WriteIFID <= 1;
 //              controlMux <= 1;
-//              branchidout <=0;
 //              end
+
+              
+//              else if ((memreadid > 0)) begin
+//            PCWrite <= 1;
+//              WriteIFID <= 1;
+//              controlMux <= 1;
+//              end
+              
               
         
               if ((JumpInstC == (1 || 2))) begin
@@ -102,11 +114,11 @@ input branchid,branchex,branchmem,branchout;
               
               
  if  (branchout == 1) begin
-          PCWrite <= 0;
+          PCWrite <= 1;
               WriteIFID <= 1;
               controlMux <= 1;
               flushifid  <= 1;
-              flushidex <= 0;
+              flushidex <= 1;
               flushexmem <= 0;          
           end
           
