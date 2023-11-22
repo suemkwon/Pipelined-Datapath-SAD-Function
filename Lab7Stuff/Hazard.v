@@ -98,11 +98,11 @@ input branchid,branchex,branchmem,branchout;
 //              end
 
               
-//              else if ((memreadid > 0)) begin
-//            PCWrite <= 1;
-//              WriteIFID <= 1;
-//              controlMux <= 1;
-//              end
+              else if ((memreadid > 0) && (memReadEX > 0) ) begin
+              PCWrite <= 1;
+              WriteIFID <= 1;
+              controlMux <= 1;
+              end
               
               
         
