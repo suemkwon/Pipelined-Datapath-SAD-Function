@@ -10,14 +10,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt, JumpInstCont, ALUOp,funct,hazardjump,clk);
+module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead, MemToReg, zeroExt, JumpInstCont, ALUOp,funct,hazardjump,clk,flushifid);
 
     input [5:0] opcode,funct;
     output reg PCSrc, RegWrite, ALUSrc, Branch, MemWrite, MemRead, zeroExt; 
     output reg [2:0] JumpInstCont, MemToReg, RegDst;
     output reg [4:0] ALUOp;
-    input hazardjump;
+    input [2:0] hazardjump;
     input clk;
+    
+    output reg flushifid;
     
     initial begin
        PCSrc <= 0;
@@ -30,27 +32,13 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
        MemToReg <= 0; 
        zeroExt <= 0;
        JumpInstCont <= 0;
+       flushifid <= 0;
      end   
 
-//test
-    always @(posedge clk)    begin
-       if (hazardjump == 1) begin
-       PCSrc <= 0;
-       RegWrite <= 0;
-       RegDst <= 0;
-       ALUSrc <= 0;
-       Branch <= 0; 
-       MemWrite <= 0; 
-       MemRead <= 0; 
-       MemToReg <= 0; 
-       zeroExt <= 0;
-       JumpInstCont <= 0;
-       end
-       end
-       //test
 
 
-    always @(opcode or funct)    begin
+
+    always @*    begin
         
     case(opcode)
     
@@ -66,7 +54,7 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         zeroExt <= 0;
         ALUOp <= 5'b00000;
         JumpInstCont <= 0;
-        if (funct == 6'b001000)begin//jr
+    if (funct == 6'b001000)begin//jr
         PCSrc <= 0;
         RegWrite <= 0;
         RegDst <= 0;
@@ -358,7 +346,35 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         JumpInstCont <= 1;  
         end   
         
-     endcase    
+     endcase 
+     flushifid <= 0;
+     if (hazardjump == 1) begin
+       PCSrc <= 0;
+       RegWrite <= 0;
+       RegDst <= 0;
+       ALUSrc <= 0;
+       Branch <= 0; 
+       MemWrite <= 0; 
+       MemRead <= 0; 
+       MemToReg <= 0; 
+       zeroExt <= 0;
+       JumpInstCont <= 0;
+       flushifid <= 1;
+       end   
+       
+//       else if (hazardjump == 2) begin
+//       PCSrc <= 0;
+//       RegWrite <= 1;
+//       RegDst <= 2;
+//       ALUSrc <= 0;
+//       Branch <= 0; 
+//       MemWrite <= 0; 
+//       MemRead <= 0; 
+//       MemToReg <= 2; 
+//       zeroExt <= 0;
+//       JumpInstCont <= 0;
+//       end 
+       
     end
 
 endmodule
