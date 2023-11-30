@@ -106,28 +106,29 @@ input branchid,branchex,branchmem,branchout;
               
               
         
-              if ((JumpInstC == (1 || 2))) begin
+              if (JumpInstC == (1)) begin
               PCWrite <= 0;
+              WriteIFID <= 1;
+              controlMux <= 0;
+              end
+              
+              if (JumpInstC == (2)) begin
+              PCWrite <= 1;
               WriteIFID <= 1;
               controlMux <= 0;
               end
               
               
  if  (branchout == 1) begin
-          PCWrite <= 1;
+              PCWrite <= 0;
               WriteIFID <= 1;
               controlMux <= 1;
               flushifid  <= 1;
-              flushidex <= 1;
+              flushidex <= 0;
               flushexmem <= 0;          
-          end
-          
-             
+          end          
     end
  
  
- 
-
-
          
 endmodule
