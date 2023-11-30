@@ -673,8 +673,18 @@ nop
 nop
 #check if done
 addi $t4, $t4, 1
+nop
+nop
+nop
+nop
+nop
 addi $t3, $t3, 1
 #blt, $t4, $s1
+nop
+nop
+nop
+nop
+nop
 slt $t5, $t4, $s1,      #checks sizes
 nop
 nop
@@ -776,8 +786,23 @@ nop
 nop
 exitRight:
     add     $t3, $s4, $zero
+    nop
+nop
+nop
+nop
+nop
     add     $t4, $s5, $zero 
+    nop
+nop
+nop
+nop
+nop
     addi    $s0, $s0, -1
+    nop
+nop
+nop
+nop
+nop
     #bge     $s4, $s0, goToUpLoop #go up if at bottom
     slt $t5, $s4, $s0
     nop
@@ -810,7 +835,17 @@ nop
 nop
 nop
 add         $t3, $s4, $zero     #restore t3 and t4 to pre sad values
+nop
+nop
+nop
+nop
+nop
 add         $t4, $s5, $zero
+nop
+nop
+nop
+nop
+nop
 addi        $s0, $s0, 1
 nop
 nop
@@ -855,8 +890,23 @@ nop
 nop
 nop
     add     $t4, $zero, $t4   
+    nop
+nop
+nop
+nop
+nop
     addi     $t4, $t4, -1     # columns go left 1
+    nop
+nop
+nop
+nop
+nop
     add         $s4, $t3, $zero
+    nop
+nop
+nop
+nop
+nop
     add         $s5, $t4, $zero
 nop
 nop
@@ -937,10 +987,30 @@ nop
     
     
     add     $t0, $t9, $zero     # minSum is tempSum
+    nop
+nop
+nop
+nop
+nop
     add     $v0, $s4, $zero     # row value
     add     $v1, $s5, $zero     # column value
+    nop
+nop
+nop
+nop
+nop
 leftSkip:
+nop
+nop
+nop
+nop
+nop
    add         $t3, $s4, $zero      #reset t3 and t4 to values before sad
+   nop
+nop
+nop
+nop
+nop
     add         $t4, $s5, $zero
     nop
 nop
@@ -985,6 +1055,11 @@ nop
 nop
 nop
     addi     $t3, $t3, -1     # makes these variables work correctly
+    nop
+nop
+nop
+nop
+nop
      addi     $t4, $t4, 1     # 
      nop
 nop
@@ -1009,6 +1084,11 @@ nop
 nop
 nop
     add     $t3, $t3, $zero     # why
+    nop
+nop
+nop
+nop
+nop
     addi     $t4, $t4, 1    # go 1 row down
     #bge        $t3, $s0, right3 #if frame is bigger than bottom row size exit to the right
     nop
@@ -1030,6 +1110,11 @@ nop
 nop
     
     add         $s4, $t3, $zero #make s4 and s5 into t3 and t4 respectively
+    nop
+nop
+nop
+nop
+nop
     add         $s5, $t4, $zero
     nop
 nop
@@ -1043,6 +1128,11 @@ nop
 nop
 nop
     add         $t3, $s4, $zero     #reset t3 and t4
+    nop
+nop
+nop
+nop
+nop
     add         $t4, $s5, $zero
 
 
@@ -1108,8 +1198,23 @@ nop
 
 
     add     $t0, $t9, $zero     # minSum is tempSum
+    nop
+nop
+nop
+nop
+nop
     add     $v0, $s4, $zero     # row value
+    nop
+nop
+nop
+nop
+nop
     add     $v1, $s5, $zero     # column value
+    nop
+nop
+nop
+nop
+nop
 downSkip:
 nop
 nop
@@ -1134,6 +1239,11 @@ nop
 
 downSkip2:
 add         $t3, $s4, $zero     #reset t3 and t4
+nop
+nop
+nop
+nop
+nop
 add        $t4, $s5, $zero
 nop
 nop
@@ -1231,7 +1341,17 @@ nop
 nop
 nop
     addi     $t4, $t4, 1     # $t3 = column
+    nop
+nop
+nop
+nop
+nop
     add         $s4, $t3, $zero
+    nop
+nop
+nop
+nop
+nop
     add         $s5, $t4, $zero
     nop
 nop
@@ -1311,8 +1431,18 @@ nop
 
 
     add     $t0, $t9, $zero     # minSum is tempSum
+    nop
+nop
+nop
+nop
+nop
     add     $v0, $s4, $zero     # $v0 = row
     add     $v1, $s5, $zero     # $v1 = column
+    nop
+nop
+nop
+nop
+nop
     
 upPass:
 nop
@@ -1321,6 +1451,11 @@ nop
 nop
 nop
     add         $t3, $s4, $zero     #restore t3 and t4
+    nop
+nop
+nop
+nop
+nop
     add         $t4, $s5, $zero
     nop
 nop
@@ -1341,6 +1476,11 @@ nop
 nop
 nop
     addi     $t3, $t3, 1     # restore t3 and t4 to what they were before uploop
+    nop
+nop
+nop
+nop
+nop
     addi     $t4, $t4, -1     #
     nop
 nop
@@ -1430,6 +1570,11 @@ nop
 nop
 
     add     $t0, $t9, $zero     # minSum is tempSum
+    nop
+nop
+nop
+nop
+nop
     add     $v0, $s4, $zero     # $v0 = row
     add     $v1, $t2, $zero     # $v1 = column
     nop
@@ -1665,6 +1810,11 @@ nop
 nop
 nop
 endAbs:
+nop
+nop
+nop
+nop
+nop
     add     $t1, $t1, $t8       # add the absolute difference to sum
     addi    $t5, $t5, 4         # increment frame index
     addi    $t6, $t6, 4         # increment window index
@@ -1704,6 +1854,11 @@ nop
 nop
 nop
     add     $t5, $t5, $t7       # increment frame index
+    nop
+nop
+nop
+nop
+nop
     addi    $t3, $t3, 1         # increment i
     nop
 nop
