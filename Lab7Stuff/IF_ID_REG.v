@@ -10,12 +10,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module IF_ID_REG(instructionIn, PCPlus4In, instructionOut, PCPlus4Out, clk,hazardOutIFID,flush);
+module IF_ID_REG(instructionIn, PCPlus4In, instructionOut, PCPlus4Out, clk,hazardOutIFID,flush,jumpFlush);
     input hazardOutIFID;
     input clk;
     input [31:0] instructionIn, PCPlus4In;
     output reg [31:0] instructionOut, PCPlus4Out;
-    input flush;
+    input flush,jumpFlush;
     
     initial begin
         instructionOut = 0;
@@ -33,9 +33,9 @@ module IF_ID_REG(instructionIn, PCPlus4In, instructionOut, PCPlus4Out, clk,hazar
         PCPlus4Out <= PCPlus4Out;
         end //end else begin
         
-         if (flush == 1)  begin //hazard detection
+         if (flush == 1 || jumpFlush == 1)  begin //hazard detection
     instructionOut <= 0;
-        PCPlus4Out <= PCPlus4Out;
+        PCPlus4Out <= 0;
         end //end else begin
         
     end//end always
