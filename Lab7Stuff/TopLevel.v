@@ -35,7 +35,8 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
     output wire regWriteMEM,regWriteWB;
     output wire [31:0] readMemDataMEM;
     output wire [31:0]aluResultMEM, readData2MEM;
-    output wire memWriteMEM, memReadMEM;
+    output wire memWriteMEM, memReadMEM;  
+    
 // Instruction Fetch 
 
         wire [31:0] instrAaddress, instruction; 
@@ -75,9 +76,11 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
         wire [2:0] bottomMuxOut,topMuxOut;
         wire [31:0] B22;
         wire [31:0] v0out,v1out;
-        wire hazardJump;
+        wire [2:0] hazardJump;
         wire flushIfId, flushIdEx, flushExMem;
         wire branchoutout;
+        wire jumpflush;
+        
         
         Mux32Bit2To1 v(muxOut, pcresultPlus4MEM, pcPlus4, branchOUT);
         // Mux27Bit2To1(out, inA, inB, sel, pcplus4, jumpReturn);
@@ -92,7 +95,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
         // InstructionMemory(PCResult, Instruction)
         InstructionMemory c(ProgramCounter, instruction);
         // IF_ID_REG(instructionIn, PCPlus4In, instructionOut, PCPlus4Out, clk)
-        IF_ID_REG d(instruction, pcPlus4, instructionOut, pcresultPlus4Out, clk,hazardOutIFID,flushIfId);
+        IF_ID_REG d(instruction, pcPlus4, instructionOut, pcresultPlus4Out, clk,hazardOutIFID,flushIfId,jumpflush);
     
 // Instruction Decode
 
@@ -107,7 +110,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
         // Controller(opCode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, 
                 // MemWrite, MemRead, MemToReg, zeroExt, JumpInstCont, ALUOp)
         Controller e(opcode, pcSrcID, regWriteID, regDstID, aluSrcID, branchID, 
-                 memWriteID, memReadID, memToRegID, zeroExtID, JumpInstC, ALUOpID,funct,hazardJump,clk);
+                 memWriteID, memReadID, memToRegID, zeroExtID, JumpInstC, ALUOpID,funct,hazardJump,clk,jumpflush);
         // SignExtension(in, out, zeroExt)
         SignExtension f(immediate, immediateID, zeroExtID2);
         // SignExtend(in, out)
