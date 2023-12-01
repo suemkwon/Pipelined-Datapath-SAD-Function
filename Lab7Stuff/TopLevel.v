@@ -3,7 +3,7 @@
 // 
 // Module Name: TopLevel
 //
-// Percent Effort: Justyn Arnold (33%), George Collias (33%), Sue Kwon (33%)
+// Percent Effort: George Collias (50%), Sue Kwon (50%)
 // 
 // Additional Comments:
 // 
