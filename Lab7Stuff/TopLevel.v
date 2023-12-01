@@ -9,7 +9,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module TopLevel(v0out, v1out,rst,clk);
+module TopLevel(v1out, v0out,rst,clk);
      
 
     input clk, rst;

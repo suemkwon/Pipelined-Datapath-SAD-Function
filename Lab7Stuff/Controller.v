@@ -346,6 +346,20 @@ module Controller(opcode, PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, Mem
         JumpInstCont <= 1;  
         end   
         
+        
+        default: begin 
+        PCSrc <= 0;
+        RegWrite <= 0;
+        RegDst <= 0;
+        ALUSrc <= 0;
+        Branch <= 0;
+        MemWrite <= 0;
+        MemRead <= 0;
+        MemToReg <= 0;
+        zeroExt <= 0;
+        ALUOp <= 5'b00000;  //doesnt matter
+        JumpInstCont <= 0; 
+        end
      endcase 
      flushifid <= 0;
      if (hazardjump == 1) begin

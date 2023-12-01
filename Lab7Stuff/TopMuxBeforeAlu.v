@@ -29,14 +29,19 @@ input [31:0] inA;
     input[2:0] sel;
     
     output reg [31:0] out;
+    
+initial begin
+out <= 0;
+end
 
-    always @ (sel, inA, inB,inC) begin
+
+    always @* begin
         if (sel == 0)//normal operation
-            out <= inA;
+            out = inA;
         else if (sel == 1)
-            out <= inB;
-        else if (sel == 2)
-        out <= inC;
+            out = inB;
+        else
+        out = inC;
         
     end   
 endmodule

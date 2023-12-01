@@ -16,10 +16,7 @@ module ControlMux(sel,PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead
     output reg [2:0] JumpInstCont_out, MemToReg_out, RegDst_out;
     output reg [4:0] ALUOp_out;
     
-
-    always @* begin
-    //initial begin
-        if (sel == 1) begin //hazard detected
+    initial begin
        PCSrc_out <= 0;
        RegWrite_out <= 0;
        RegDst_out <= 0;
@@ -31,6 +28,23 @@ module ControlMux(sel,PCSrc, RegWrite, RegDst, ALUSrc, Branch, MemWrite, MemRead
        zeroExt_out <= 0;
        JumpInstCont_out <= 0;
        ALUOp_out <= 0;
+    end
+    
+    
+    always @* begin
+    //initial begin
+       if (sel == 1) begin //hazard detected
+       PCSrc_out = 0;
+       RegWrite_out = 0;
+       RegDst_out = 0;
+       ALUSrc_out = 0;
+       Branch_out = 0; 
+       MemWrite_out = 0; 
+       MemRead_out = 0; 
+       MemToReg_out = 0; 
+       zeroExt_out = 0;
+       JumpInstCont_out = 0;
+       ALUOp_out = 0;
        end
        
         else begin //no hazard

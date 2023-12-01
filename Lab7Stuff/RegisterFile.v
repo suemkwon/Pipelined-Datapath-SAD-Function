@@ -54,15 +54,15 @@ module RegisterFile(clk, ReadRegister1, ReadRegister2, ReadData1, ReadData2, Wri
   
     integer i;
     
-    output reg [31:0] v0out, v1out;
+    output [31:0] v0out, v1out;
     output [31:0] ReadData1, ReadData2;
     reg [31:0] Reg [31:0];  
     
 
     
     initial begin
-    v0out=0;
-    v1out=0;
+
+    
         for (i = 0; i < 32; i=i+1) begin
             Reg[i] = i;
         end
@@ -75,17 +75,9 @@ module RegisterFile(clk, ReadRegister1, ReadRegister2, ReadData1, ReadData2, Wri
 	end
 	
 	
-	always @* begin
-	 if (WriteRegister == 2) begin
-	   v0out = WriteData;
-	   end
-	   if (WriteRegister == 3) begin
-	   v1out = WriteData;
-	   end 
-end
-	
-	
 	assign ReadData1 = Reg[ReadRegister1];
-    assign ReadData2 = Reg[ReadRegister2];               
+    assign ReadData2 = Reg[ReadRegister2];       
+    assign v0out = Reg[2];
+    assign v1out = Reg[3];        
 
 endmodule

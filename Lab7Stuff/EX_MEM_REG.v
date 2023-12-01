@@ -70,21 +70,21 @@ module EX_MEM_REG(clk, RegWrite, Branch, MemWrite, MemRead, MemToReg, PCSrc, Zer
             
             
             if (flush == 1) begin
-                        RegWrite_out = 0;
-            Branch_out = 0;
-            MemWrite_out = 0;
-            MemRead_out = 0;
-            MemToReg_out = 0;        
-            pc_plus_4_out = 0;
-            Zero_out = 0;
-            ALUResult_out = 0;
-            WriteMemData_out = 0;
-            WriteReg_out = 0;
-            PCSrc_out = 0;
-            alu_out = 0;
-            pcresultPlus4out = 0;
-            jump_outMEM = 0;
-            sign_out_mem = 0;
+                        RegWrite_out <= 0;
+            Branch_out <= 0;
+            MemWrite_out <= 0;
+            MemRead_out <= 0;
+            MemToReg_out <= 0;        
+            pc_plus_4_out <= 0;
+            Zero_out <= 0;
+            ALUResult_out <= 0;
+            WriteMemData_out <= 0;
+            WriteReg_out <= 0;
+            PCSrc_out <= 0;
+            alu_out <= 0;
+            pcresultPlus4out <= 0;
+            jump_outMEM <= 0;
+            sign_out_mem <= 0;
             end
         end       
         

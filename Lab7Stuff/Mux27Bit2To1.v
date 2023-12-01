@@ -43,8 +43,8 @@ module Mux27Bit2To1(out, inA, inB, sel, pcplus4, jumpReturn, resetJump);
           //  out <= inA;
         
         else    begin
-            out = inB;
-            resetJump = 0;
+            out <= inB;
+            resetJump <= 0;
             end
     end   
            

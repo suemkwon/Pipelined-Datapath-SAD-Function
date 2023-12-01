@@ -9,16 +9,20 @@ module BottomMuxBeforeALU(out, inA, inB, inC, sel);
     input [2:0] sel;
     
     output reg [31:0] out;
+    
+initial begin
+out <= 0;
+end
 
-    always @ (sel, inA, inB, inC) begin
+    always @* begin
         if (sel == 0)
-            out <= inA;
+            out = inA;
             
         else if(sel == 1)
-            out <= inB;
+            out = inB;
             
-            else if(sel == 2)
-            out <= inC;
+            else
+            out = inC;
     end   
            
 endmodule

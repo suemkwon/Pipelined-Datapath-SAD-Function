@@ -16,15 +16,19 @@ module Mux5Bit2To1(out, inA, inB, sel);
     input [2:0] sel;
     
     output reg [4:0] out;
+    
+initial begin
+out = 0;
+end
 
-    always @(inA or inB or sel) begin
+    always @* begin
         if(sel == 0) begin
             out = inA;
         end
         else if(sel == 1) begin
             out = inB;
         end
-        else if(sel == 2)begin
+        else begin
         out = 31;
         end
     end   
