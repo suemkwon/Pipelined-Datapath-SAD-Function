@@ -9,36 +9,14 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresultPlus4EX,ALUOpID,readData1ID,readData2ID,instructionOut,readData1EX, instruction,functEX, ALUOpEX,aluControl,aluControlOut, writeRegEX,twentySevenOut, B,pcResultPlus4wb,pcresultPlus4MemOut, aluSrcEX,aluResultWB, readMemDataWB, aluSrcID,memToRegWB,readData2EX,opcode,JumpInstWB, immediateEX,shiftAmountEX,JumpInstC,PCWrite,hazardOutIFID, controlMuxControl,readRegRs,readRegRt,regRtEX,memReadEX,bottomMuxOut,topMuxOut,writeRegMEM,writeRegWB,regWriteMEM,regWriteWB,regRsEX,readMemDataMEM,aluResultMEM, readData2MEM, memWriteMEM, memReadMEM,v0out,v1out);
-    
+module TopLevel(v0out, v1out,rst,clk);
+     
 
     input clk, rst;
-    output wire [31:0] WriteData, ProgramCounter;
-    //wire ClkOut;
-     output wire[31:0] aluResultEX,pcPlus4,pcresultPlus4EX,readData1ID,readData2ID, instructionOut, instruction; 
-    output wire[4:0] ALUOpID, aluControl,aluControlOut,writeRegEX;
-    output wire[31:0]B,pcResultPlus4wb,readData1EX;
-    output wire aluSrcEX;
-    output wire[31:0]aluResultWB, readMemDataWB, readData2EX, immediateEX,shiftAmountEX,pcresultPlus4MemOut,twentySevenOut;
-    output wire[5:0] functEX, opcode;
-    output wire [4:0] ALUOpEX;
-    output wire aluSrcID;
-    output wire [2:0] JumpInstC,memToRegWB,JumpInstWB;//test
     output wire [31:0] v0out,v1out;
     
-    output wire PCWrite, hazardOutIFID, controlMuxControl;
-    output wire [4:0] readRegRs,readRegRt,regRtEX;
-    output wire memReadEX;
-    output wire [2:0] bottomMuxOut,topMuxOut;
-    output wire [4:0] writeRegMEM,writeRegWB,regRsEX;
-    output wire regWriteMEM,regWriteWB;
-    output wire [31:0] readMemDataMEM;
-    output wire [31:0]aluResultMEM, readData2MEM;
-    output wire memWriteMEM, memReadMEM;  
-    
 // Instruction Fetch 
-
+        wire [31:0] WriteData, ProgramCounter;
         wire [31:0] instrAaddress, instruction; 
         // Pipeline Register Outputs
         wire [31:0] instructionOut, pcresultPlus4ID, pcresultPlus4EX, pcresultPlus4MEM, pcresultPlus4MemOut,
@@ -75,7 +53,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
         
         wire [2:0] bottomMuxOut,topMuxOut;
         wire [31:0] B22;
-        wire [31:0] v0out,v1out;
+        
         wire [2:0] hazardJump;
         wire flushIfId, flushIdEx, flushExMem;
         wire branchoutout;
@@ -179,7 +157,7 @@ module TopLevel(clk, rst, WriteData, ProgramCounter, aluResultEX,pcPlus4,pcresul
                  JumpInstEX,JumpInstMEM,signExtendedJumpEX,signExtendedJumpMEM,flushExMem);
     
     //ForwardingUnit(clk,regRTEX,regRSEX,writeMEM,writeWB,regwriteMEM,regwriteWB,bottomMuxOut,topMuxOut);
-        ForwardingUnit a2(clk,regRtEX,regRsEX,writeRegMEM,writeRegWB,regWriteMEM,regWriteWB,bottomMuxOut,topMuxOut,branchEX,memReadEX,memReadMEM);
+        hazardDetect a2(clk,regRtEX,regRsEX,writeRegMEM,writeRegWB,regWriteMEM,regWriteWB,bottomMuxOut,topMuxOut,branchEX,memReadEX,memReadMEM);
     
     //module TopMuxBeforeAlu(out, inA, inB, inC, sel );
     TopMuxBeforeAlu a4(readData1EX2,readData1EX, WriteData, aluResultMEM,topMuxOut);

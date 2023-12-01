@@ -28,14 +28,16 @@ module Mux27Bit2To1(out, inA, inB, sel, pcplus4, jumpReturn, resetJump);
     end
     
     assign inA2 = {{pcplus4[31:28]}, {inA[27:0]}};//concatenate pcplus4 with jump code
-    always @ (sel, inA, inB, pcplus4) begin
+    //always @ (sel, inA, inB, pcplus4) begin
+        always @* begin
         if (sel == 1)begin//j and jal
-            out = inA2;
-            resetJump = 1;
+            out <= inA2;
+            resetJump <= 1;
         end
+        
         else if (sel == 2) begin//jr
-            out = jumpReturn;
-            resetJump = 1;
+            out <= jumpReturn;
+            resetJump <= 1;
        end
         //else if (sel == 3)//jal
           //  out <= inA;

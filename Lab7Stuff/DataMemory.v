@@ -31,7 +31,10 @@ initial begin
 $readmemh("data_memory.mem", memory);
 //$readmemh("public_data_memory_lab6.mem", memory);
 //$readmemh("lab7data.mem", memory);
-    $readmemh("private_data_memory_lab6.mem", memory);
+//$readmemh("trythisdatamemory.mem", memory);
+ //$readmemh("private_data_memory_lab6.mem", memory);
+  
+    
 end
     // The 'WriteData' value is written into the address corresponding
     // to Address[11:2] in the positive clock edge if 'MemWrite' signal is 1
