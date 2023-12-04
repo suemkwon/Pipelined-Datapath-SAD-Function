@@ -3,7 +3,6 @@
 // 
 // Module Name: TopLevel
 //
-// Percent Effort: George Collias (50%), Sue Kwon (50%)
 // 
 // Additional Comments:
 // 
